@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Quota</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'base.css' %}">
+</head>
+
+<body>
+    <div class="navbar">
+        <div class="stu-info">
+            <div class="stu-pic"></div>
+            <div class="info"></div>
+        </div>
+        <div class="feature">
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/myQuota">My Quota</a></li>
+                <li><a href="/result">Result</a></li>
+                <li><a href="/waitList">Wait List</a></li>
+                <li><a href="/findSub">Find Subject</a></li>
+                <li><a href="/setting">Setting</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div>
+        {% block content %}
+        {% endblock %}
+    </div>
+</body>
+
+</html>
