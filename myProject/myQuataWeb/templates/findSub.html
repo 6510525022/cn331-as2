@@ -1,5 +1,145 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>Find Subject</h1>
+
+<h1>Find Subjects</h1>
+
+<style>
+    .container {
+      max-width: 1140px;
+      margin-left: auto;
+      margin-right: auto;
+      padding-left: 15px;
+      padding-right: 15px;
+    }
+
+    .mt-5 {
+      margin-top: 80px;
+    }
+
+    .custom-box {
+      border-radius: 5px;
+      background-color: white;
+      border: 1px solid #ccc;
+      padding: 20px;
+      width: 900px;
+      height: 500px;
+    }
+
+    .row {
+      display: flex;
+    }
+
+    .col-left {
+      width: 33.33%;
+      border-right: 1px solid #ddd;
+      padding-right: 15px;
+    }
+
+    .col-right {
+      width: 66.66%;
+      padding-left: 15px;
+    }
+
+    .scrollable-list {
+      width: 30%;
+      max-height: 450px;
+      overflow-y: auto;
+    }
+
+    .list-group-item {
+      padding: 10px;
+      cursor: pointer;
+      list-style-type: none;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .list-group-item.active {
+      background-color: gray;
+      color: white;
+    }
+
+
+    ::-webkit-scrollbar {
+        width: 6px; /* width of the entire scrollbar */
+    }
+        
+    ::-webkit-scrollbar-track {
+        background: #f1f1f1; /* color of the tracking area */
+    }
+        
+    ::-webkit-scrollbar-thumb {
+        background: #888; /* color of the scroll thumb */
+    }
+        
+    ::-webkit-scrollbar-thumb:hover {
+        background: #555; /* color of the scroll thumb on hover */
+    }
+
+  </style>
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+        <div class="custom-box"> 
+            
+            <!-- กรอบสี่เหลี่ยม -->
+            <header>
+                <input type="text" id="search" placeholder="ค้นหารายวิชา...">
+                <select id="Quata-filter">
+                    <option value="">แสดงเฉพาะวิชาที่สามารถขอ Quata</option>
+                </select>
+                <!-- <button id="add-subject-btn">เพิ่มวิชา</button> -->
+            </header>
+
+            
+            <div class="row">
+            <!-- รายชื่อทางด้านซ้าย -->
+                <div class="scrollable-list">
+                  <ul class="list-group" id="nameList">
+                    <li class="list-group-item" onclick="showDetails('CN301')">CN301ssssssssss</li>
+                    <li class="list-group-item" onclick="showDetails('CN302')">CN302</li>
+                    <li class="list-group-item" onclick="showDetails('CN303')">CN303</li>
+                    <li class="list-group-item" onclick="showDetails('CN304')">CN304</li>
+                    <li class="list-group-item" onclick="showDetails('CN305')">CN305</li>
+                    <li class="list-group-item" onclick="showDetails('CN301')">CN301</li>
+                    <li class="list-group-item" onclick="showDetails('CN302')">CN302</li>
+                    <li class="list-group-item" onclick="showDetails('CN303')">CN303</li>
+                    <li class="list-group-item" onclick="showDetails('CN304')">CN304</li>
+                    <li class="list-group-item" onclick="showDetails('CN305')">CN305</li>
+                    <li class="list-group-item" onclick="showDetails('CN301')">CN301</li>
+                    <li class="list-group-item" onclick="showDetails('CN302')">CN302</li>
+                    <li class="list-group-item" onclick="showDetails('CN303')">CN303</li>
+                    <li class="list-group-item" onclick="showDetails('CN304')">CN304</li>
+                    <li class="list-group-item" onclick="showDetails('CN305')">CN305</li>
+                  </ul>
+                </div>
+
+
+                <!-- รายละเอียดของชื่อที่เลือกทางด้านขวา -->=
+                <div id="SubjectDetails" style="padding: 20px;">
+                    <h5> เลือกรายวิชาที่ต้องการขอ Quata หรือดูรายละเอียด </h5>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+    
+<script>
+    function showDetails(name) {
+        document.getElementById("SubjectDetails").innerHTML = `<h4>วิชา ${name}</h4> <p> รายละเอียดของวิชา ${name}</p>`;
+    
+        // Highlight the selected item
+        let listItems = document.querySelectorAll('.list-group-item');
+        listItems.forEach(item => {
+            item.classList.remove('active');
+        });
+            event.target.classList.add('active');
+        }
+</script>
+
+    
 {% endblock %}
