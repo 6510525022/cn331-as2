@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from .models import Subject
 # Create your views here.
 
 def home(request):
@@ -14,7 +15,14 @@ def waitList(request):
     return render(request, "waitList.html")
 
 def findSub(request):
-    return render(request, "findSub.html")
+    subjects = Subject.objects.all().values("sub_id",
+    "code",
+    "sub_name",
+    "faculty",
+    "quota_limit",
+    "semester",
+    "status")
+    return render(request, "findSub.html" , {'subjects': list(subjects)})
 
 def setting(request):
     return render(request, "setting.html")

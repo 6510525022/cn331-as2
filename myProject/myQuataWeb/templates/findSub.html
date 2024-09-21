@@ -1,5 +1,198 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>Find Subject</h1>
+
+<h1>Find Subjects</h1>
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap demo</title>
+    
+    <style>
+        body {
+            background-color: #1c1c1c;
+        }
+
+        .custom-box {
+          border: 1px solid #000;
+          padding: 20px;
+          height: 500px;
+          width: 800px;
+          background-color: #333;
+        }
+
+        .scrollable-list {
+          max-height: 400px;
+          overflow-y: auto;
+        }
+        
+        .list-group-item {
+            background-color: #333;
+            color: #ccc;
+            border: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .list-group-item:hover {
+            background-color: #444;
+        }
+
+        .list-group-item.active {
+            background-color: #555;
+            color: #fff;
+        }
+
+        .form-control, .form-select {
+            background-color: #333;
+            color: #DDD;
+            border: 1px solid #555;
+        }
+
+        .form-control::placeholder {
+            color: #888;
+        }
+
+        .form-control:focus {
+            background-color: #444;
+            color: #fff;
+        }
+
+        .form-select option {
+            background-color: #333;
+            color: #fff;
+        }
+
+        .custom-box h5, .custom-box p {
+            color: #fff;
+        }
+          
+    </style>
+  </head>
+
+  <body class="bg-dark">
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-10">
+                <div class="custom-box rounded">
+                    <header class="mb-4">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <input type="text" id="search" class="form-control" placeholder="ค้นหารายวิชา..." onkeyup="filterSubjects()">
+                            </div>
+                            <div class="col-md-4">
+                                <select id="Quata-filter" class="form-select mb-3" onchange="filterSubjects()">
+                                    <option value="">แสดงทุกรายวิชา</option>
+                                    <option value="Open">รายวิชาที่เปิดรับ Quata</option>
+                                    <option value="Close">รายวิชาที่ไม่เปิดรับ Quata</option>
+                                </select>
+                            </div>
+                        </div>
+                    </header>
+
+                    <div class="row">
+                        <!-- รายชื่อทางด้านซ้าย -->
+                        <div class="col-md-4">
+                            <div class="scrollable-list">
+                                <ul class="list-group" id="nameList">
+                                    {% for subject in subjects %}
+                                        <li class="list-group-item" data-status="{{ subject.status }}" onclick="showDetails({{ subject|safe }})">
+                                            {{ subject.code }} | {{ subject.sub_name }}
+                                        </li>
+                                    {% empty %}
+                                        <li class="list-group-item">No subjects found</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- รายละเอียดของชื่อที่เลือกทางด้านขวา -->
+                        <div class="col-md-8">
+                            <div id="nameDetails" class="border p-3" style="height : 350px">
+                                <h5>เลือกรายวิชาที่ต้องการขอ Quata หรือดูรายละเอียด</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script>
+        //<!-- add-my-Quata-->
+        //กดแล้วเพิ่มโควต้า
+        function addToQuata(a) {
+            //เพิ่มเสร็จแล้ว
+        }
+
+        function showDetails(subject) {
+            
+            if ( 1 == 1 ){
+                document.getElementById("nameDetails").innerHTML = `
+                <h5>code: ${subject.code}</h5>
+                <p>sub_name: ${subject.sub_name}</p>
+                <p>faculty: ${subject.faculty}</p>
+                <p>quota_limit: ${subject.quota_limit}</p>
+                <p>semester: ${subject.semester}</p>
+                <p>status: ${subject.status}</p>
+
+                <div class="col text-center" style="margin-top: 60px;">
+                <button type="button" class="btn btn-dark" id="add-my-Quata">ขอ Quata</button>
+                </div>
+            `;
+            }else{
+                document.getElementById("nameDetails").innerHTML = `
+                <h5>code: ${subject.code}</h5>
+                <p>sub_name: ${subject.sub_name}</p>
+                <p>faculty: ${subject.faculty}</p>
+                <p>quota_limit: ${subject.quota_limit}</p>
+                <p>semester: ${subject.semester}</p>
+                <p>status: ${subject.status}</p>
+
+                <div class="col text-center" style="margin-top: 60px;">
+                <button type="button" class="btn btn-dark" id="add-my-Quata" disabled>ไม่สามารถขอ Quata</button>
+                </div>
+            `;
+            }
+
+            // Highlight the selected item
+            let listItems = document.querySelectorAll('.list-group-item');
+            listItems.forEach(item => {
+                item.classList.remove('active');
+            });
+            event.target.classList.add('active');
+        }
+
+        function filterSubjects() {
+            const filterValue = document.getElementById("Quata-filter").value.toLowerCase();
+            const searchValue = document.getElementById("search").value.toLowerCase();
+            const listItems = document.querySelectorAll('.list-group-item');
+
+            listItems.forEach(item => {
+
+                const subjectName = item.textContent.toLowerCase();
+                const status = item.getAttribute('data-status').toLowerCase();
+                
+                const matchesFilter = (filterValue === "" || status === filterValue);
+                const matchesSearch = (subjectName.includes(searchValue));
+
+                if (matchesFilter && matchesSearch) {
+                    item.style.display = ""; // แสดงรายการ
+                } else {
+                    item.classList.remove('active');
+                    document.getElementById("nameDetails").innerHTML = `
+                    <h5>เลือกรายวิชาที่ต้องการขอ Quata หรือดูรายละเอียด</h5>
+                    `
+                    item.style.display = "none"; // ซ่อนรายการ
+                }
+            });
+        }
+    </script>
+</body>
+
+
 {% endblock %}
