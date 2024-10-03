@@ -2,8 +2,6 @@
 
 {% block content %}
 
-<h1>Find Subjects</h1>
-
 <!doctype html>
 <html lang="en">
   <head>
@@ -17,108 +15,117 @@
         }
 
         .custom-box {
-          border: 1px solid #000;
           padding: 20px;
-          height: 500px;
-          width: 800px;
-          background-color: #333;
+          height: 85vh;
+          width: 160vh;
+        }
+
+        .glass {
+          border: 1px solid transparent;
+          backdrop-filter: blur(1rem);
+          box-shadow: 1.3rem 1.3rem 1.3rem rgba(254,223,223,0.05);
+          border-top-color : rgba(255,255,255,0.5);
+          border-left-color : rgba(255,255,255,0.5);
+          border-right-color : rgba(255,255,255,0.1);
+          border-bottom-color : rgba(255,255,255,0.1);
+
+          background-color: rgba(0,0,0,0.05);
         }
 
         .scrollable-list {
-          max-height: 400px;
+          min-height: 9vh;
+          max-height: 90%;
           overflow-y: auto;
         }
         
         .list-group-item {
-            background-color: #333;
-            color: #ccc;
+            background-color: #111;
+            color: #aaa;
             border: none;
-            transition: background-color 0.3s ease;
+            transition: background-color 0.12s ease;
         }
 
         .list-group-item:hover {
-            background-color: #444;
+            background-color: #231120;
+            /*color: #fe8298;*/
         }
 
         .list-group-item.active {
-            background-color: #555;
-            color: #fff;
+            background-color: #231120;
+            /*color: #fe8298;*/
+            color: #fedfc1;
         }
 
         .form-control, .form-select {
-            background-color: #333;
-            color: #DDD;
-            border: 1px solid #555;
+            background-color: #111;
+            color: #ccc;
+            border: 1px solid #333;
         }
 
         .form-control::placeholder {
-            color: #888;
+            color: #ccc;
         }
 
         .form-control:focus {
-            background-color: #444;
-            color: #fff;
+            background-color: #111;
+            color: #bbcccb;
         }
 
         .form-select option {
-            background-color: #333;
-            color: #fff;
+            background-color: #111;
+            color: #ccc;
         }
 
         .custom-box h5, .custom-box p {
-            color: #fff;
+            color: #ccc;
         }
+        
           
     </style>
   </head>
+  
 
-  <body class="bg-dark">
-    <div class="container mt-5">
-        <div class="row justify-content-center">
-            <div class="col-md-10">
-                <div class="custom-box rounded">
-                    <header class="mb-4">
-                        <div class="row">
-                            <div class="col-md-8">
-                                <input type="text" id="search" class="form-control" placeholder="ค้นหารายวิชา..." onkeyup="filterSubjects()">
-                            </div>
-                            <div class="col-md-4">
-                                <select id="Quata-filter" class="form-select mb-3" onchange="filterSubjects()">
-                                    <option value="">แสดงทุกรายวิชา</option>
-                                    <option value="Open">รายวิชาที่เปิดรับ Quata</option>
-                                    <option value="Close">รายวิชาที่ไม่เปิดรับ Quata</option>
-                                </select>
-                            </div>
-                        </div>
-                    </header>
+<div class="container-fluid row justify-content-center align-items-center mb-2">
+    
+    <div class="custom-box glass rounded">
+        <header class="row">
+            <div class="col-md-8">
+                <input type="text" id="search" class="form-control" placeholder="ค้นหารายวิชา..." onkeyup="filterSubjects()">
+            </div>
+            <div class="col-md-4">
+                <select id="Quata-filter" class="form-select mb-3" onchange="filterSubjects()">
+                    <option value="">แสดงทุกรายวิชา</option>
+                    <option value="Open">รายวิชาที่เปิดรับ Quata</option>
+                    <option value="Close">รายวิชาที่ไม่เปิดรับ Quata</option>
+                </select>
+            </div>
+        </header>
 
-                    <div class="row">
-                        <!-- รายชื่อทางด้านซ้าย -->
-                        <div class="col-md-4">
-                            <div class="scrollable-list">
-                                <ul class="list-group" id="nameList">
-                                    {% for subject in subjects %}
-                                        <li class="list-group-item" data-status="{{ subject.status }}" onclick="showDetails({{ subject|safe }})">
-                                            {{ subject.code }} | {{ subject.sub_name }}
-                                        </li>
-                                    {% empty %}
-                                        <li class="list-group-item">No subjects found</li>
-                                    {% endfor %}
-                                </ul>
-                            </div>
-                        </div>
+        <div class="row">
+        <!-- รายชื่อทางด้านซ้าย -->
+        <div class="col-md-4">
+            <div class="scrollable-list">
+                <ul class="list-group" id="nameList">
+                    {% for subject in subjects %}
+                        <li class="list-group-item text-uppercase" data-status="{{ subject.status }}" onclick="showDetails({{ subject|safe }})">
+                            {{ subject.code }} | {{ subject.sub_name }}
+                        </li>
+                    {% empty %}
+                        <li class="list-group-item">No subjects found</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
 
-                        <!-- รายละเอียดของชื่อที่เลือกทางด้านขวา -->
-                        <div class="col-md-8">
-                            <div id="nameDetails" class="border p-3" style="height : 350px">
-                                <h5>เลือกรายวิชาที่ต้องการขอ Quata หรือดูรายละเอียด</h5>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+        <!-- รายละเอียดของชื่อที่เลือกทางด้านขวา -->
+        <div class="col-md-8 ">
+            <div id="nameDetails" class="border p-3" style="height : 53vh">
+                <h5>เลือกรายวิชาที่ต้องการขอ Quata หรือดูรายละเอียด</h5>
             </div>
         </div>
     </div>
+
+</div>
 
 
 
@@ -140,7 +147,7 @@
                 <p>semester: ${subject.semester}</p>
                 <p>status: ${subject.status}</p>
 
-                <div class="col text-center" style="margin-top: 60px;">
+                <div class="col text-center" style="margin-top: 8vh;">
                 <button type="button" class="btn btn-dark" id="add-my-Quata">ขอ Quata</button>
                 </div>
             `;
@@ -153,7 +160,7 @@
                 <p>semester: ${subject.semester}</p>
                 <p>status: ${subject.status}</p>
 
-                <div class="col text-center" style="margin-top: 60px;">
+                <div class="col text-center" style="margin-top: 8vh;">
                 <button type="button" class="btn btn-dark" id="add-my-Quata" disabled>ไม่สามารถขอ Quata</button>
                 </div>
             `;
@@ -192,7 +199,7 @@
             });
         }
     </script>
-</body>
+</div>
 
 
 {% endblock %}
