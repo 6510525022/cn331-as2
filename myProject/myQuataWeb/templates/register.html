@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>myQuota</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .combinedForm>form {
+            max-width: 600px;
+            margin: auto;
+            display: flex;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- form รวม -->
+    <div class="combinedForm">
+        <form method="post" action="register">
+            {% csrf_token %}
+            <!-- Form สมัคร -->
+            <div class="regForm mb-4">
+                <h3>สมัครสมาชิก</h3>
+                <div class="mb-3">
+                    <label for="username" class="form-label">Username</label>
+                    <input type="text" class="form-control" id="username" placeholder="Enter username" name="username"
+                        required>
+                </div>
+                <div class="mb-5">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="password1" placeholder="Enter password"
+                        name="password" required>
+                </div>
+                <div class="mb-5">
+                    <label for="repeat_password" class="form-label">Repeat Password</label>
+                    <input type="password" class="form-control" id="repeat_password" placeholder="Repeat password"
+                        name="repeat_password" required>
+                </div>
+            </div>
+
+            <!-- Form ข้อมูล -->
+            <div class="infoForm mb-4">
+                <h3>ข้อมูลผู้ใช้</h3>
+                <div class="mb-3">
+                    <label for="firstname" class="form-label">ชื่อ</label>
+                    <input type="text" class="form-control" id="firstname" placeholder="Enter firstname"
+                        name="firstname" required>
+                </div>
+                <div class="mb-5">
+                    <label for="lastname" class="form-label">นามสกุล</label>
+                    <input type="text" class="form-control" id="lastname" placeholder="Enter lastname" name="lastname"
+                        required>
+                </div>
+                <div class="mb-5">
+                    <label for="faculty" class="form-label">Faculty</label>
+                    <input type="text" class=" form-control" id="faculty" placeholder="Enter faculty" name="faculty"
+                        required>
+                </div>
+                <div class="mb-5">
+                    <label for="photo" class="form-label">Photo</label>
+                    <input type="file" class=" form-control" accept="image/*" id="photo" placeholder="Enter photo"
+                        name="photo required">
+                </div>
+            </div>
+
+
+            <div class=" d-grid gap-4">
+                <button type="submit" class="btn btn-dark">Submit</button>
+            </div>
+        </form>
+    </div>
+</body>
+
+</html>
