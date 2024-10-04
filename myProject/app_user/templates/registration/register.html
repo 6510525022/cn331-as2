@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+
+{% block navBar %}
+<a class="btn btn-outline-danger me-2" href="{%url 'login'%}">return to login</a>
+{% endblock %}
+
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>myQuota</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .custom-box {
+            padding: 20px;
+            height: 85vh;
+            width: 160vh;
+        }
+
+        .glass {
+            border: 1px solid transparent;
+            backdrop-filter: blur(1rem);
+            box-shadow: 1.3rem 1.3rem 1.3rem rgba(254, 223, 223, 0.05);
+            border-top-color: rgba(255, 255, 255, 0.5);
+            border-left-color: rgba(255, 255, 255, 0.5);
+            border-right-color: rgba(255, 255, 255, 0.1);
+            border-bottom-color: rgba(255, 255, 255, 0.1);
+
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+
+        .form-control {
+            background-color: #111;
+            color: #ccc;
+            border: 1px solid #333;
+        }
+
+        .form-control::placeholder {
+            color: #ccc;
+        }
+
+        .form-control:focus {
+            background-color: #111;
+            color: #bbcccb;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- form รวม -->
+    <div class="container-fluid row justify-content-center align-items-center mb-2">
+        <div class="custom-box glass rounded text-light">
+            <form method="post" action="register">
+                <div class="container-fluid row">
+                    {% csrf_token %}
+                    <!-- Form สมัคร -->
+                    <div class="regForm mb-4 col-md-6">
+                        <h3>สมัครสมาชิก</h3>
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Username</label>
+                            <input type="text" class="form-control" id="username" placeholder="Enter username"
+                                name="username" required>
+                        </div>
+                        <div class="mb-2">
+                            <label for="password" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="password1" placeholder="Enter password"
+                                name="password" required>
+                        </div>
+                        <div class="mb-2">
+                            <label for="repeat_password" class="form-label">Repeat Password</label>
+                            <input type="password" class="form-control" id="repeat_password"
+                                placeholder="Repeat password" name="repeat_password" required>
+                        </div>
+                    </div>
+
+                    <!-- Form ข้อมูล -->
+                    <div class="infoForm mb-4 col-md-6">
+                        <h3>ข้อมูลผู้ใช้</h3>
+                        <div class="mb-3">
+                            <label for="firstname" class="form-label">ชื่อ</label>
+                            <input type="text" class="form-control" id="firstname" placeholder="Enter firstname"
+                                name="firstname" required>
+                        </div>
+                        <div class="mb-2">
+                            <label for="lastname" class="form-label">นามสกุล</label>
+                            <input type="text" class="form-control" id="lastname" placeholder="Enter lastname"
+                                name="lastname" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="faculty" class="form-label">Faculty</label>
+                            <input type="text" class=" form-control" id="faculty" placeholder="Enter faculty"
+                                name="faculty" required>
+                        </div>
+                        <div class="mb-2">
+                            <label for="profile_pic" class="form-label">profile_pic</label>
+                            <input type="file" class=" form-control" accept=".jpg, .jpeg, .png" id="profile_pic"
+                                placeholder="Enter profile_pic" name="profile_pic required">
+                        </div>
+                    </div>
+
+                    <div class="d-grid p-5">
+                        <button type="submit" class="btn btn-dark pl-5 pr-5">Submit</button>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>
+
+{% endblock %}
