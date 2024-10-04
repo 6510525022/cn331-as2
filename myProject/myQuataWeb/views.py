@@ -65,3 +65,19 @@ def register(request):
         
     return render(request, 'register.html')
 
+def login(request):
+    if request.method == 'POST':
+        # รับข้อมูลจากฟอร์ม
+        username = request.POST['username']
+        password = request.POST['password']
+
+        try:
+            user = Student.objects.get(stu_id=username, password=password)
+            print("เจอแล้ว!")
+            return render(request, 'myQuota.html')  
+        except Student.DoesNotExist:
+            print("ไม่เจอ!")
+            return redirect('/')
+            
+    else:
+        return render(request, "login.html")

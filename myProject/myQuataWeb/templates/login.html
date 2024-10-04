@@ -1,8 +1,6 @@
 {% extends "base.html" %}
 
-{% block navBar %}
-    {% include "NavBar.html" %}
-{% endblock %}
+
 
 {% block content %}
 <style>
@@ -89,8 +87,6 @@
 </style>
 
 <div class="container-fluid content row">
-
-
   <div class="col-md-5 cen-text">
     <!-- CAROUSEL SLIDE -->
     <div id="carouselMethod" class="carousel slide" data-ride="carousel">
@@ -114,7 +110,26 @@
 
   <div class="col-md-7 cen-text">
     <div class="container row login-container glass mb-2">
-      TTTTTTTTT
+      <h2 class="text-center mb-4 ">My Quata</h2>
+
+      <form method="post" action="">
+        {% csrf_token %}
+        <div class="mb-3">
+          <label for="username" class="form-label">Username</label>
+          <input type="text" class="form-control" id="username" placeholder="Enter username" name="username" required>
+        </div>
+        <div class="mb-5">
+          <label for="password" class="form-label">Password</label>
+          <input type="password" class="form-control" id="password" placeholder="Enter password" name="password"
+            required>
+        </div>
+        <div class="d-grid gap-4">
+          <button type="submit" class="btn btn-dark">Login</button>
+        </div>
+        <div class="text-center mt-3">
+          <p>Don't have an account? <a href="/register" class="pinkText">Register</a></p>
+        </div>
+      </form>
     </div>
   </div>
 

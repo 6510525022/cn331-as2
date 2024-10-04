@@ -6,5 +6,6 @@ urlpatterns = [
     path('myQuota', views.myQuota),
     path('findSub', views.findSub),
     path('register', views.register),
+    path('login', views.login),
 ]
 
