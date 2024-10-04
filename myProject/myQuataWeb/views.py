@@ -43,25 +43,24 @@ def register(request):
         faculty = request.POST["faculty"]
         profile_pic = request.FILES.get("profile_pic")
 
-        if password != repeat_password or Student.objects.get(stu_id=username):  
-            # แสดงข้อความเตือน (แก้ html ตรงนี้)
+        # ตรวจสอบชื่อผู้ใช้งาน
+        if Student.objects.filter(stu_id=username).exists():
+            return redirect('/register')
 
-            return redirect('/register') 
+        # ตรวจสอบรหัสผ่าน
+        if password != repeat_password:
+            return redirect('/register')
 
-        else:
-            student = Student.objects.create(
-                stu_id=username,
-                password=password,
-                first_name=firstname,
-                last_name=lastname,
-                faculty=faculty,
-                profile_pic=profile_pic, 
-            )
+        # บันทึกข้อมูลนักเรียนใหม่
+        student = Student.objects.create(
+            stu_id=username,
+            password=password,
+            first_name=firstname,
+            last_name=lastname,
+            faculty=faculty,
+             profile_pic=profile_pic if profile_pic else 'media/profile_photos/default.jpg',
+        )
 
+        return redirect('/')
 
-            student.save()
-            
-            return redirect('/')
-        
     return render(request, 'register.html')
-
