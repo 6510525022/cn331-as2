@@ -39,7 +39,7 @@
 
         .scrollable-list {
           min-height: 9vh;
-          max-height: 90%;
+          max-height: 70vh;
           overflow-y: auto;
         }
         
@@ -108,30 +108,29 @@
 
         <div class="row">
         <!-- รายชื่อทางด้านซ้าย -->
-        <div class="col-md-4">
-            <div class="scrollable-list">
-                <ul class="list-group" id="nameList">
-                    {% for subject in subjects %}
-                        <li class="list-group-item text-uppercase" data-status="{{ subject.status }}" onclick="showDetails({{ subject|safe }})">
-                            {{ subject.code }} | {{ subject.sub_name }}
-                        </li>
-                    {% empty %}
-                        <li class="list-group-item">No subjects found</li>
-                    {% endfor %}
-                </ul>
+            <div class="col-md-4">
+                <div class="scrollable-list">
+                    <ul class="list-group" id="nameList">
+                        {% for subject in subjects %}
+                            <li class="list-group-item text-uppercase" data-status="{{ subject.status }}" onclick="showDetails({{ subject|safe }})">
+                                {{ subject.code }} | {{ subject.sub_name }}
+                            </li>
+                        {% empty %}
+                            <li class="list-group-item">No subjects found</li>
+                        {% endfor %}
+                    </ul>
+                </div>
             </div>
-        </div>
 
         <!-- รายละเอียดของชื่อที่เลือกทางด้านขวา -->
-        <div class="col-md-8 ">
-            <div id="nameDetails" class="border p-3" style="height : 53vh">
-                <h5>เลือกรายวิชาที่ต้องการขอ Quata หรือดูรายละเอียด</h5>
+            <div class="col-md-8 ">
+                <div id="nameDetails" class="border p-3" style="height : 53vh">
+                    <h5>เลือกรายวิชาที่ต้องการขอ Quata หรือดูรายละเอียด</h5>
+                </div>
             </div>
         </div>
+
     </div>
-
-</div>
-
 
 
     <script>

@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block navBar %}
-    <a class="btn btn-outline-danger me-2" href="/login">return to login</a>
+    <a class="btn btn-outline-danger me-2" href="/login">return to login page</a>
 {% endblock %}
 
 {% block content %}
@@ -60,6 +60,8 @@
                     <!-- Form สมัคร -->
                     <div class="regForm mb-4 col-md-6">
                         <h3>สมัครสมาชิก</h3>
+                        <hr noshade  size= “10” width= “40/80%”>
+
                         <div class="mb-3">
                             <label for="username" class="form-label">Username</label>
                             <input type="text" class="form-control" id="username" placeholder="Enter username"
@@ -80,6 +82,8 @@
                     <!-- Form ข้อมูล -->
                     <div class="infoForm mb-4 col-md-6">
                         <h3>ข้อมูลผู้ใช้</h3>
+                        <hr noshade  size= “10” width= “40/80%”>
+
                         <div class="mb-3">
                             <label for="firstname" class="form-label">ชื่อ</label>
                             <input type="text" class="form-control" id="firstname" placeholder="Enter firstname"
@@ -102,7 +106,7 @@
                         </div>
                     </div>
 
-                    <div class="d-grid p-5">
+                    <div class="d-grid p-4">
                         <button type="submit" class="btn btn-dark pl-5 pr-5">Submit</button>
                     </div>
 

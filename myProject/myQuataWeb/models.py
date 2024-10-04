@@ -4,7 +4,6 @@ import os
 # Create your models here.
 
 class Student(models.Model):
-    
     user_id = models.AutoField(primary_key=True)
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
