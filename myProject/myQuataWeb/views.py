@@ -17,7 +17,6 @@ def home(request):
             print("ไม่เจอ!")
             return redirect('/')
             
-
     else:
         return render(request, "home.html")
 
@@ -42,23 +41,27 @@ def register(request):
         firstname = request.POST["firstname"]
         lastname = request.POST["lastname"]
         faculty = request.POST["faculty"]
-        # photo = request.FILES.get("photo")
+        profile_pic = request.FILES.get("profile_pic")
 
-        if password != repeat_password:  
-            # แสดงข้อความเตือน
-            return redirect('/register')  # หรือ render กลับไปยัง template
+        if password != repeat_password or Student.objects.get(stu_id=username):  
+            # แสดงข้อความเตือน (แก้ html ตรงนี้)
+
+            return redirect('/register') 
 
         else:
-            Student.objects.create(
+            student = Student.objects.create(
                 stu_id=username,
                 password=password,
                 first_name=firstname,
                 last_name=lastname,
                 faculty=faculty,
-                # photo=photo,  # บันทึกภาพ
+                profile_pic=profile_pic, 
             )
 
-            return render(request, 'home.html')
+
+            student.save()
+            
+            return redirect('/')
         
     return render(request, 'register.html')
 

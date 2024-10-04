@@ -18,7 +18,7 @@
 <body>
     <!-- form รวม -->
     <div class="combinedForm">
-        <form method="post" action="register">
+        <form method="post" action="register" enctype="multipart/form-data">
             {% csrf_token %}
             <!-- Form สมัคร -->
             <div class="regForm mb-4">
@@ -59,9 +59,9 @@
                         required>
                 </div>
                 <div class="mb-5">
-                    <label for="photo" class="form-label">Photo</label>
-                    <input type="file" class=" form-control" accept="image/*" id="photo" placeholder="Enter photo"
-                        name="photo required">
+                    <label for="profile_pic" class="form-label">profile_pic</label>
+                    <input type="file" class=" form-control" accept="image/*" id="profile_pic"
+                        placeholder="Enter profile_pic" name="profile_pic" required">
                 </div>
             </div>
 
