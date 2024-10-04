@@ -1,15 +1,71 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="container-fluid vw-50 vh-100 d-flex flex-column">
-    <div class="p-3 mb-2 bg-primary w-100" style="height: 50%;">
+<style>
+    .custom-box {
+        height: 100%;
+        width: 50%;
+    }
+
+    .glass {
+        border: 1px solid transparent;
+        backdrop-filter: blur(1rem);
+        box-shadow: 1.3rem 1.3rem 1.3rem rgba(254, 223, 223, 0.05);
+        border-top-color: rgba(255, 255, 255, 0.5);
+        border-left-color: rgba(255, 255, 255, 0.5);
+        border-right-color: rgba(255, 255, 255, 0.1);
+        border-bottom-color: rgba(255, 255, 255, 0.1);
+
+        background-color: rgba(0, 0, 0, 0.05);
+    }
+
+    .form-control,
+    .form-select {
+        background-color: #111;
+        color: #ccc;
+        border: 1px solid #333;
+    }
+
+    .form-control::placeholder {
+        color: #ccc;
+    }
+
+    .form-control:focus {
+        background-color: #111;
+        color: #bbcccb;
+    }
+
+    .form-select option {
+        background-color: #111;
+        color: #ccc;
+    }
+
+    .custom-box h5,
+    .custom-box p {
+        color: #ccc;
+    }
+</style>
+<div class="container-fluid d-flex flex-column justify-content-center align-items-center mb-2 h-100">
+    <div class="custom-box glass rounded p-3 text-center h-50 text-white">
+        <div class="col-md-8">
+            <input type="text" id="search" class="form-control" placeholder="ค้นหารายวิชา..."
+                onkeyup="filterSubjects()">
+        </div>
         myQuota
     </div>
-    <div class="p-3 mb-2 bg-secondary w-100 d-flex" style="height: 50%;">
-        <div class="w-50 bg-light p-3">
+    <div class="d-flex mb-3 h-50 w-75">
+        <div class="custom-box glass m-3 p-3 text-center text-white">
+            <div class="col-md-8">
+                <input type="text" id="search" class="form-control" placeholder="ค้นหารายวิชา..."
+                    onkeyup="filterSubjects()">
+            </div>
             waitList
         </div>
-        <div class="w-50 bg-dark text-white p-3">
+        <div class="custom-box glass m-3 p-3 text-center text-white">
+            <div class="col-md-8">
+                <input type="text" id="search" class="form-control" placeholder="ค้นหารายวิชา..."
+                    onkeyup="filterSubjects()">
+            </div>
             Result
         </div>
     </div>
