@@ -48,6 +48,7 @@
 
 <body>
     <!-- form รวม -->
+<<<<<<< HEAD
     <div class="container-fluid row justify-content-center align-items-center mb-2">
         <div class="custom-box glass rounded text-light">
             <form method="post" action="register">
@@ -96,6 +97,55 @@
                             <input type="file" class=" form-control" accept="image/*" id="photo" placeholder="Enter photo"
                                 name="photo required">
                         </div>
+=======
+    <div class="combinedForm">
+        <form method="post" action="register" enctype="multipart/form-data">
+            {% csrf_token %}
+            <!-- Form สมัคร -->
+            <div class="regForm mb-4">
+                <h3>สมัครสมาชิก</h3>
+                <div class="mb-3">
+                    <label for="username" class="form-label">Username</label>
+                    <input type="text" class="form-control" id="username" placeholder="Enter username" name="username"
+                        required>
+                </div>
+                <div class="mb-5">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="password1" placeholder="Enter password"
+                        name="password" required>
+                </div>
+                <div class="mb-5">
+                    <label for="repeat_password" class="form-label">Repeat Password</label>
+                    <input type="password" class="form-control" id="repeat_password" placeholder="Repeat password"
+                        name="repeat_password" required>
+                </div>
+            </div>
+
+            <!-- Form ข้อมูล -->
+            <div class="infoForm mb-4">
+                <h3>ข้อมูลผู้ใช้</h3>
+                <div class="mb-3">
+                    <label for="firstname" class="form-label">ชื่อ</label>
+                    <input type="text" class="form-control" id="firstname" placeholder="Enter firstname"
+                        name="firstname" required>
+                </div>
+                <div class="mb-5">
+                    <label for="lastname" class="form-label">นามสกุล</label>
+                    <input type="text" class="form-control" id="lastname" placeholder="Enter lastname" name="lastname"
+                        required>
+                </div>
+                <div class="mb-5">
+                    <label for="faculty" class="form-label">Faculty</label>
+                    <input type="text" class=" form-control" id="faculty" placeholder="Enter faculty" name="faculty"
+                        required>
+                </div>
+                <div class="mb-5">
+                    <label for="profile_pic" class="form-label">profile_pic</label>
+                    <input type="file" class=" form-control" accept="image/*" id="profile_pic"
+                        placeholder="Enter profile_pic" name="profile_pic" required">
+                </div>
+            </div>
+>>>>>>> 6b3d5195c1f0644f3efc475881af8fe271a5b0a7
 
                         
                     </div>

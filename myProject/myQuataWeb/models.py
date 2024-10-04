@@ -1,4 +1,5 @@
 from django.db import models
+import os
 
 # Create your models here.
 
@@ -10,7 +11,7 @@ class Student(models.Model):
     stu_id = models.CharField(max_length=10, unique=True)
     password = models.CharField(max_length=255)
     faculty = models.CharField(max_length=255)
-    
+    profile_pic = models.ImageField(upload_to='media/profile_photos/', blank=True, null=True, default='profile_photos/default.jpg')
     
     def __str__(self):
         return f"user_id: {self.user_id} stu_id: {self.stu_id}, name: {self.first_name} {self.last_name}, faculty:{self.faculty}"

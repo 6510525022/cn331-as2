@@ -7,3 +7,4 @@ urlpatterns = [
     path('findSub', views.findSub),
     path('register', views.register),
 ]
+

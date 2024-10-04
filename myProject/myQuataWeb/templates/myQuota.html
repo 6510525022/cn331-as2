@@ -1,5 +1,18 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>My Quota</h1>
+<div class="container-fluid vw-50 vh-100 d-flex flex-column">
+    <div class="p-3 mb-2 bg-primary w-100" style="height: 50%;">
+        myQuota
+    </div>
+    <div class="p-3 mb-2 bg-secondary w-100 d-flex" style="height: 50%;">
+        <div class="w-50 bg-light p-3">
+            waitList
+        </div>
+        <div class="w-50 bg-dark text-white p-3">
+            Result
+        </div>
+    </div>
+</div>
+
 {% endblock %}
