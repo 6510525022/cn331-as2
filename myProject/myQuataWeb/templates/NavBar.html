@@ -31,9 +31,7 @@
 <div class="fixHigh">
     <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container-fluid pt-1" style="min-height: 8vh;">
-    
-        {% if user.is_authenticated %}
-        <div class="container-fluid pt-1">
+
             <!-- Icon ด้านซ้ายเมื่อ navbar ถูกย่อ -->
             <a class="navbar-brand ms-auto" href="#">
                 <span>{{ user.username }}</span>
@@ -70,11 +68,9 @@
                     {% csrf_token %}
                     <button type="submit" class="btn btn-outline-danger me-2">Logout</button>
                 </form>
-
             </div>
 
         </div>
-        {% endif %}
     </nav>
 </div>
 

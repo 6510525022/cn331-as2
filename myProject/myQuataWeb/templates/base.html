@@ -48,9 +48,11 @@
 
 <body>
     <div class="navbar">
-      {% block navBar %}
-      
-      {% endblock %}
+      {% if user.is_authenticated %}
+        {% block navBar %}
+        
+        {% endblock %}
+      {% endif %}
     </div>
     <div class = "content">
       {% block content %}

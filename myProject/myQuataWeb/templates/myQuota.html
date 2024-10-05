@@ -87,7 +87,7 @@
     <div class="custom-box1 glass rounded">
 
         <header class="row p-3">
-            <h3 class="col-md-3 text-center">myQuota</h3>
+            <h3 class="col-md-3 text-center yellowText">myQuota</h3>
             <div class="col-md-5 btn-group mb-2" id="subjectFilter">
                 <a value="all" class="btn btn-dark disabled p-1 fs-0" onclick="show('all')">All</a>
                 <a value="myQuota" class="btn btn-dark p-1 fs-0" onclick="show('myQuota')">Approval</a>
@@ -117,7 +117,7 @@
                     </thead>
                     <tbody id="nameDetails">
                         {% for subject in myQuota %}
-                            <tr data-status="{{ subject.status }}" id="list-group-item">
+                            <tr data-status="{{ subject.status }}" id="subject-{{ subject.sub_id }}">
                                 <td class="text-uppercase">{{ subject.code }}</td>
                                 <td class="text-capitalize">{{ subject.sub_name }}</td>
                                 <td>Approval</td>
@@ -128,9 +128,9 @@
                                 </td>
                             </tr>
                         {% endfor %}
-                
+                    
                         {% for subject in waitList %}
-                            <tr data-status="{{ subject.status }}" id="list-group-item">
+                            <tr data-status="{{ subject.status }}" id="subject-{{ subject.sub_id }}">
                                 <td class="text-uppercase">{{ subject.code }}</td>
                                 <td class="text-capitalize">{{ subject.sub_name }}</td>
                                 <td>Waiting</td>
@@ -145,9 +145,9 @@
                                 </td>
                             </tr>
                         {% endfor %}
-                
+                    
                         {% for subject in result %}
-                            <tr data-status="{{ subject.status }}" id="list-group-item">
+                            <tr data-status="{{ subject.status }}" id="subject-{{ subject.sub_id }}">
                                 <td class="text-uppercase">{{ subject.code }}</td>
                                 <td class="text-capitalize">{{ subject.sub_name }}</td>
                                 <td>Denied</td>
@@ -159,6 +159,7 @@
                             </tr>
                         {% endfor %}
                     </tbody>
+                    
                 </table>
 
             </div>
@@ -264,7 +265,7 @@
 
         function cancelQuotaRequest(subjectId) {
             studentId = 12;
-
+        
             const csrfTokenElement = document.querySelector('[name=csrfmiddlewaretoken]');
             if (!csrfTokenElement) {
                 console.error("CSRF token element not found.");
@@ -289,56 +290,17 @@
             .then(data => {
                 // แสดงข้อความแจ้งเตือน
                 alert(data.message); // ข้อความที่ได้จาก server
-                // reset ตาราง
-                document.getElementById("nameDetails").innerHTML = `
-                    {% for subject in myQuota %}
-                            <tr data-status="{{ subject.status }}" id="list-group-item">
-                                <td class="text-uppercase">{{ subject.code }}</td>
-                                <td class="text-capitalize">{{ subject.sub_name }}</td>
-                                <td>Approval</td>
-                                <td class="text-capitalize">{{ subject.faculty }}</td>
-                                <td>{{ subject.quota_limit }}</td>
-                                <td>{{ subject.semester }}</td>
-                                <td>
-                                </td>
-                            </tr>
-                        {% endfor %}
-                
-                        {% for subject in waitList %}
-                            <tr data-status="{{ subject.status }}" id="list-group-item">
-                                <td class="text-uppercase">{{ subject.code }}</td>
-                                <td class="text-capitalize">{{ subject.sub_name }}</td>
-                                <td>Waiting</td>
-                                <td class="text-capitalize">{{ subject.faculty }}</td>
-                                <td>{{ subject.quota_limit }}</td>
-                                <td>{{ subject.semester }}</td>
-                                <td>
-                                    {% csrf_token %}
-                                    <button class="btn btn-outline-warning fs-0 p-1" onclick="cancelQuotaRequest({{ subject.sub_id }})">
-                                        ยกเลิก
-                                    </button>
-                                </td>
-                            </tr>
-                        {% endfor %}
-                
-                        {% for subject in result %}
-                            <tr data-status="{{ subject.status }}" id="list-group-item">
-                                <td class="text-uppercase">{{ subject.code }}</td>
-                                <td class="text-capitalize">{{ subject.sub_name }}</td>
-                                <td>Denied</td>
-                                <td class="text-capitalize">{{ subject.faculty }}</td>
-                                <td>{{ subject.quota_limit }}</td>
-                                <td>{{ subject.semester }}</td>
-                                <td>
-                                </td>
-                            </tr>
-                        {% endfor %}
-                `;
-
+        
+                // ลบแถวที่ถูกยกเลิก
+                const row = document.getElementById(`subject-${subjectId}`);
+                if (row) {
+                    row.remove();
+                }
             })
             .catch(error => {
                 console.error('There was a problem with your fetch operation:', error);
             });
         }
+        
     </script>
 {% endblock %}
