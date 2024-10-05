@@ -1,7 +1,9 @@
+import json
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth import login
-from myQuataWeb.models import Student
+from myQuataWeb.models import QuotaRequest, Student, Subject
+from django.views.decorators.csrf import csrf_exempt
 
 def register(request):
     return render(request, 'registration/register.html')
@@ -40,3 +42,8 @@ def register(request):
     #     return redirect('/')
 
     # return render(request, 'register.html')
+    
+    
+    
+    
+    

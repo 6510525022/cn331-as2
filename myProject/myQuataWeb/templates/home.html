@@ -12,7 +12,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 20px;
+    padding: 0px;
   }
 
   .carousel-item {
@@ -43,6 +43,7 @@
   .login-container {
     height: 71vh;
     width: 70vh;
+    max-width: 70vw;
     background-color: #f7f7f7;
     padding: 6vh;
     border-radius: 10px;
@@ -51,7 +52,6 @@
 
   .glass {
     border: 1px solid transparent;
-    backdrop-filter: blur(1rem);
     box-shadow: 1.3rem 1.3rem 1.3rem rgba(254, 223, 223, 0.05);
     border-top-color: rgba(255, 255, 255, 0.5);
     border-left-color: rgba(255, 255, 255, 0.5);
@@ -69,12 +69,12 @@
     color: dimgray;
   }
 
-  .bg-pink {
-    background-color: rgb(254, 130, 130);
-  }
-
   .yellowText {
     color: #fedfc1;
+  }
+
+  .bg-pink {
+    background-color: rgb(254, 130, 130);
   }
 
   .form-control {
@@ -93,8 +93,7 @@
   }
 </style>
 
-<div class="container-fluid content row">
-
+<div class="container-fluid row">
 
   <div class="col-md-5 cen-text">
     <!-- CAROUSEL SLIDE -->

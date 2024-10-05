@@ -1,7 +1,11 @@
+import json
 from django.shortcuts import render, redirect
 from .models import Subject ,Student, QuotaRequest, Approval
+from django.http import JsonResponse
+from django.shortcuts import get_object_or_404
 # Create your views here.
 
+student_id = 12
 
 def home(request):
     if request.method == 'POST':
@@ -28,13 +32,17 @@ def myQuota(request):
     "quota_limit",
     "semester",
     "status")
-    #MyQuota = get_subjects_with_Approval_Approval(student_id)
-    #waitList = get_subjects_without_Approval(student_id)
-    #Result = get_subjects_with_Approval(student_id)
-    return render(request, "myQuota.html"  , {'subjects': list(subjects)})
+    MyQuota = get_subjects_with_Approval_Approval(student_id)
+    waitList = get_subjects_without_Approval(student_id)
+    Result = get_subjects_with_Approval_Denied(student_id)
+    return render(request, "myQuota.html", 
+                  {'subjects': list(subjects),
+                   'myQuota': MyQuota,
+                   'waitList': waitList,
+                   'result': Result}
+                  )
 
 def findSub(request):
-    #subjects = get_subjects_without_quota_request_by_student(student_id)
     subjects = Subject.objects.all().values("sub_id",
     "code",
     "sub_name",
@@ -94,12 +102,6 @@ def login(request):
         return render(request, "login.html")
 
 
-
-
-
-
-
-
 #แสดงใน findsub
 def get_subjects_without_quota_request_by_student(student_id):
     requested_subjects = QuotaRequest.objects.filter(user_id=student_id).values_list('sub_id', flat=True)
@@ -131,7 +133,7 @@ def get_subjects_with_Approval_Approval(student_id):
     return approval_subjects
 
 #แสดงใน MyQuata
-def get_subjects_with_Approval(student_id):
+def get_subjects_with_Approval_Denied(student_id):
     result_subjects = Subject.objects.filter(
         quota_requests__user_id=student_id,
         quota_requests__approvals__decision="Denied"
@@ -160,3 +162,44 @@ def get_subjects_without_Approval(student_id):
     "status")
     
     return subjects_without_approval
+
+
+
+
+    
+#findSub Request
+def add_quota_request(request):
+    if request.method == "POST":
+        data = json.loads(request.body)
+        student_id = data.get("student_id")
+        sub_id = data.get("sub_id")
+
+        try:
+            student = Student.objects.get(user_id=student_id)
+            subject = Subject.objects.get(sub_id=sub_id)
+
+            # Check if the student has already requested this quota
+            existing_request = QuotaRequest.objects.filter(user_id=student, sub_id=subject).first()
+            if existing_request:
+                return JsonResponse({"success": False, "error": "Quota request already exists."})
+            
+            # Create a new quota request
+            quota_request = QuotaRequest(user_id=student, sub_id=subject)
+            quota_request.save()
+
+            return JsonResponse({"success": True})
+        except (Student.DoesNotExist, Subject.DoesNotExist):
+            return JsonResponse({"success": False, "error": "Invalid student or subject."})
+    
+    return JsonResponse({"success": False, "error": "Invalid request method."})
+
+
+def cancel_quota_request(request, student_id, subject_id):
+    if request.method == 'POST':
+        # ค้นหาคำขอตาม student_id และ subject_id
+        quota_request = get_object_or_404(QuotaRequest, user_id=student_id, sub_id=subject_id)
+        # ลบคำขอ
+        quota_request.delete()
+        return JsonResponse({'status': 'success', 'message': 'Request cancelled successfully'})
+    else:
+        return JsonResponse({'status': 'error', 'message': 'Invalid request method'}, status=400)
