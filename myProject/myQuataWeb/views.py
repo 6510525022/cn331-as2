@@ -3,26 +3,18 @@ from django.shortcuts import render, redirect
 from .models import Subject ,Student, QuotaRequest, Approval
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
+from django.contrib.auth.models import User
 # Create your views here.
 
 student_id = 12
 
-def home(request):
-    if request.method == 'POST':
-        # รับข้อมูลจากฟอร์ม
-        username = request.POST['username']
-        password = request.POST['password']
+def greeting(request):
+    return render(request, 'greeting.html')
 
-        try:
-            user = Student.objects.get(stu_id=username, password=password)
-            print("เจอแล้ว!")
-            return render(request, 'myQuota.html')  
-        except Student.DoesNotExist:
-            print("ไม่เจอ!")
-            return redirect('/')
-            
-    else:
-        return render(request, "home.html")
+def home(request):
+    current_user = request.user
+    student = Student.objects.filter(stu_id=current_user.username).first()
+    return render(request, "home.html", {'student': student})
 
 def myQuota(request):
     subjects = Subject.objects.all().values("sub_id",

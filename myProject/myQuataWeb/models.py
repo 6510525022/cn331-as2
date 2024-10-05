@@ -8,7 +8,6 @@ class Student(models.Model):
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
     stu_id = models.CharField(max_length=10, unique=True)
-    password = models.CharField(max_length=255)
     faculty = models.CharField(max_length=255)
     profile_pic = models.ImageField(upload_to='media/profile_photos/', blank=True, null=True)
     
