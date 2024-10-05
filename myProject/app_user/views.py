@@ -16,7 +16,7 @@ def register(request):
 
             profile_pic = student_form.cleaned_data.get('profile_pic') 
             if not profile_pic:  # ถ้าไม่มีการอัปโหลดไฟล์
-                profile_pic = 'profile_photos/default.jpg'
+                profile_pic = 'media/profile_photos/default.jpg'
 
             # บันทึกข้อมูลนักเรียน
             student = Student(

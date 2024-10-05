@@ -12,9 +12,7 @@ def greeting(request):
     return render(request, 'greeting.html')
 
 def home(request):
-    current_user = request.user
-    student = Student.objects.filter(stu_id=current_user.username).first()
-    return render(request, "home.html", {'student': student})
+    return render(request, "home.html")
 
 def myQuota(request):
     subjects = Subject.objects.all().values("sub_id",

@@ -2,6 +2,12 @@
 
 {% block content %}
 <style>
+    html,
+    body {
+        height: 100%;
+        overflow: hidden;
+    }
+
     .cen-text {
         color: white;
         font-size: 1.25rem;
@@ -11,89 +17,103 @@
         padding: 20px;
     }
 
-    .carousel-item {
+    .typing-animation {
+        border-right: 2px solid;
+        white-space: nowrap;
+        overflow: hidden;
+        width: 0;
+        animation: blink-caret 0.75s step-end infinite;
+        font-size: 3rem;
+        color: white;
         text-align: center;
-        color: #fff;
-        font-size: 2rem;
+        margin: 20px auto;
+    }
+
+    .typing-animation1 {
+        animation: typing1 2s steps(30, end) forwards,
+            blink-caret 0.75s step-end infinite;
+    }
+
+    .typing-animation2 {
+        animation: typing2 3s steps(30, end) forwards 2s,
+            blink-caret 0.75s step-end infinite;
+    }
+
+    @keyframes typing1 {
+        from {
+            width: 0;
+        }
+
+        to {
+            width: 12ch;
+        }
+    }
+
+    @keyframes typing2 {
+        from {
+            width: 0;
+        }
+
+        to {
+            width: 26ch;
+        }
+    }
+
+    @keyframes blink-caret {
+
+        from,
+        to {
+            border-color: transparent;
+        }
+
+        50% {
+            border-color: white;
+        }
+    }
+
+    .glass-button {
+        display: inline-block;
+        padding: 10px 20px;
+        border: 0.5px solid rgba(255, 105, 180, 0.7);
+        backdrop-filter: blur(10px);
+        border-radius: 10px;
+        color: white;
+        text-decoration: none;
+        transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+        margin: 0 20px;
+        background-color: rgba(255, 255, 255, 0.1);
+        box-shadow: 0 4px 10px rgba(255, 105, 180, 0.5);
+        min-width: 150px;
+        height: 50px;
         display: flex;
         justify-content: center;
         align-items: center;
-        height: 100%;
-        opacity: 0;
-        transition: opacity 0s ease-in-out;
     }
 
-    .carousel-item p {
-        font-size: 1rem;
-        color: dimgray;
+    .glass-button:hover {
+        background-color: rgba(255, 255, 255, 0.3);
+        transform: scale(1.05);
+        box-shadow: 0 2px 10px rgba(255, 105, 180, 0.7);
     }
 
-    .carousel-item h5 {
-        font-size: 2.4rem;
-    }
-
-    .carousel-item.active {
-        opacity: 1;
-    }
-
-    .login-container {
-        width: 70vh;
-        background-color: #f7f7f7;
-        padding: 6vh;
-        border-radius: 10px;
-        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    }
-
-    .glass {
-        border: 1px solid transparent;
-        backdrop-filter: blur(1rem);
-        box-shadow: 1.3rem 1.3rem 1.3rem rgba(254, 223, 223, 0.05);
-        border-top-color: rgba(255, 255, 255, 0.5);
-        border-left-color: rgba(255, 255, 255, 0.5);
-        border-right-color: rgba(255, 255, 255, 0.1);
-        border-bottom-color: rgba(255, 255, 255, 0.1);
-
-        background-color: rgba(35, 17, 32, 0.1);
-    }
-
-    .pinkText {
-        color: rgb(254, 130, 130);
-    }
-
-    .bg-pink {
-        background-color: rgb(254, 130, 130);
-    }
-
-    .yellowText {
-        color: #fedfc1;
-    }
-
-    .form-control {
-        background-color: #111;
-        color: #ccc;
-        border: 1px solid #333;
-    }
-
-    .form-control::placeholder {
-        color: #ccc;
-    }
-
-    .form-control:focus {
-        background-color: #111;
-        color: #bbcccb;
+    .content {
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        text-align: center;
     }
 </style>
 
-<div class="container-fluid content row">
-    <div>
-        <a href="{%url 'login'%}">
-            login
-        </a>
+<div class="container-fluid content">
+    <h1 class="typing-animation typing-animation1">Hello, Learner.</h1>
+    <h1 class="typing-animation typing-animation2">Welcome to myQuota Website.</h1>
 
-        <a href="{%url 'register'%}">
-            register
-        </a>
+    <div class="cen-text">
+        <a href="{% url 'login' %}" class="glass-button">Login</a>
+        <a href="{% url 'register' %}" class="glass-button">Register</a>
     </div>
-
 </div>
 {% endblock %}

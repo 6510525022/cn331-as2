@@ -1,12 +1,11 @@
 {% extends "base.html" %}
 
 {% block navBar %}
-    {% include "NavBar.html" %}
+{% include "NavBar.html" %}
 {% endblock %}
 
 {% block content %}
 <style>
-
     .scrollable-list {
         font-size: small;
         max-height: 60vh;
@@ -14,7 +13,7 @@
     }
 
     .fs-0 {
-        font-size:smaller;
+        font-size: smaller;
     }
 
     .glass {
@@ -54,8 +53,7 @@
         color: #ccc;
     }
 
-    .list-group-item {
-    }
+    .list-group-item {}
 
     .list-item {
         background-color: #111;
@@ -64,30 +62,29 @@
         transition: background-color 0.12s ease;
     }
 
-    .custom-box1{
+    .custom-box1 {
         height: 83vh;
         width: 80vw;
     }
 
     .pinkText {
         color: rgb(254, 130, 130);
-      }
-    
+    }
+
     .grayText {
         color: dimgray;
     }
-    
+
     .yellowText {
         color: #fedfc1;
     }
-
 </style>
-                  
+
 <div class="container-fluid row justify-content-center align-items-center m-1">
     <div class="custom-box1 glass rounded">
 
         <header class="row p-3">
-            <h3 class="col-md-3 text-center">myQuota</h3>
+            <h3 class="col-md-3 text-center text-white">MyQuota</h3>
             <div class="col-md-5 btn-group mb-2" id="subjectFilter">
                 <a value="all" class="btn btn-dark disabled p-1 fs-0" onclick="show('all')">All</a>
                 <a value="myQuota" class="btn btn-dark p-1 fs-0" onclick="show('myQuota')">Approval</a>
@@ -95,10 +92,11 @@
                 <a value="result" class="btn btn-dark p-1 fs-0" onclick="show('result')">Denied</a>
             </div>
             <div class="col-md-4">
-                <input type="text" id="search" class="form-control" placeholder="ค้นหารายวิชา..." onkeyup="filterSubjects()">
+                <input type="text" id="search" class="form-control" placeholder="ค้นหารายวิชา..."
+                    onkeyup="filterSubjects()">
             </div>
         </header>
-     <!-- วิชาที่ลงสำเร็จ -->
+        <!-- วิชาที่ลงสำเร็จ -->
         <div class="row scrollable-list p-3">
             <!-- Force next columns to break to new line at md breakpoint and up -->
             <div class="w-100 d-md-block">
@@ -108,7 +106,7 @@
                         <tr>
                             <th scope="col">Code</th>
                             <th scope="col">Subject Name</th>
-                            <th scope="col">Status</th> 
+                            <th scope="col">Status</th>
                             <th scope="col">Faculty</th>
                             <th scope="col">Quota Limit</th>
                             <th scope="col">Semester</th>
@@ -117,46 +115,47 @@
                     </thead>
                     <tbody id="nameDetails">
                         {% for subject in myQuota %}
-                            <tr data-status="{{ subject.status }}" id="list-group-item">
-                                <td class="text-uppercase">{{ subject.code }}</td>
-                                <td class="text-capitalize">{{ subject.sub_name }}</td>
-                                <td>Approval</td>
-                                <td class="text-capitalize">{{ subject.faculty }}</td>
-                                <td>{{ subject.quota_limit }}</td>
-                                <td>{{ subject.semester }}</td>
-                                <td>
-                                </td>
-                            </tr>
+                        <tr data-status="{{ subject.status }}" id="list-group-item">
+                            <td class="text-uppercase">{{ subject.code }}</td>
+                            <td class="text-capitalize">{{ subject.sub_name }}</td>
+                            <td>Approval</td>
+                            <td class="text-capitalize">{{ subject.faculty }}</td>
+                            <td>{{ subject.quota_limit }}</td>
+                            <td>{{ subject.semester }}</td>
+                            <td>
+                            </td>
+                        </tr>
                         {% endfor %}
-                
+
                         {% for subject in waitList %}
-                            <tr data-status="{{ subject.status }}" id="list-group-item">
-                                <td class="text-uppercase">{{ subject.code }}</td>
-                                <td class="text-capitalize">{{ subject.sub_name }}</td>
-                                <td>Waiting</td>
-                                <td class="text-capitalize">{{ subject.faculty }}</td>
-                                <td>{{ subject.quota_limit }}</td>
-                                <td>{{ subject.semester }}</td>
-                                <td>
-                                    {% csrf_token %}
-                                    <button class="btn btn-outline-warning fs-0 p-1" onclick="cancelQuotaRequest({{ subject.sub_id }})">
-                                        ยกเลิก
-                                    </button>
-                                </td>
-                            </tr>
+                        <tr data-status="{{ subject.status }}" id="list-group-item">
+                            <td class="text-uppercase">{{ subject.code }}</td>
+                            <td class="text-capitalize">{{ subject.sub_name }}</td>
+                            <td>Waiting</td>
+                            <td class="text-capitalize">{{ subject.faculty }}</td>
+                            <td>{{ subject.quota_limit }}</td>
+                            <td>{{ subject.semester }}</td>
+                            <td>
+                                {% csrf_token %}
+                                <button class="btn btn-outline-warning fs-0 p-1"
+                                    onclick="cancelQuotaRequest({{ subject.sub_id }})">
+                                    ยกเลิก
+                                </button>
+                            </td>
+                        </tr>
                         {% endfor %}
-                
+
                         {% for subject in result %}
-                            <tr data-status="{{ subject.status }}" id="list-group-item">
-                                <td class="text-uppercase">{{ subject.code }}</td>
-                                <td class="text-capitalize">{{ subject.sub_name }}</td>
-                                <td>Denied</td>
-                                <td class="text-capitalize">{{ subject.faculty }}</td>
-                                <td>{{ subject.quota_limit }}</td>
-                                <td>{{ subject.semester }}</td>
-                                <td>
-                                </td>
-                            </tr>
+                        <tr data-status="{{ subject.status }}" id="list-group-item">
+                            <td class="text-uppercase">{{ subject.code }}</td>
+                            <td class="text-capitalize">{{ subject.sub_name }}</td>
+                            <td>Denied</td>
+                            <td class="text-capitalize">{{ subject.faculty }}</td>
+                            <td>{{ subject.quota_limit }}</td>
+                            <td>{{ subject.semester }}</td>
+                            <td>
+                            </td>
+                        </tr>
                         {% endfor %}
                     </tbody>
                 </table>
@@ -172,14 +171,14 @@
 
 
 
-    <script>
-        function show(type) {
+<script>
+    function show(type) {
 
-            list = document.getElementById("nameDetails");
-            list.innerHTML = "";
-            
-            if (type == "myQuota" | type == "all"){
-                list.innerHTML += `
+        list = document.getElementById("nameDetails");
+        list.innerHTML = "";
+
+        if (type == "myQuota" | type == "all") {
+            list.innerHTML += `
                     {% for subject in myQuota %}
                             <tr data-status="{{ subject.status }}" id="list-group-item">
                                 <td class="text-uppercase">{{ subject.code }}</td>
@@ -193,9 +192,9 @@
                             </tr>
                         {% endfor %}
             `;
-            }
-            if (type == "waitList" | type == "all"){
-                list.innerHTML += `
+        }
+        if (type == "waitList" | type == "all") {
+            list.innerHTML += `
                     {% for subject in waitList %}
                             <tr data-status="{{ subject.status }}" id="list-group-item">
                                 <td class="text-uppercase">{{ subject.code }}</td>
@@ -213,9 +212,9 @@
                             </tr>
                         {% endfor %}
             `;
-            }
-            if (type == "result" | type == "all"){
-                list.innerHTML += `
+        }
+        if (type == "result" | type == "all") {
+            list.innerHTML += `
                     {% for subject in result %}
                             <tr data-status="{{ subject.status }}" id="list-group-item">
                                 <td class="text-uppercase">{{ subject.code }}</td>
@@ -229,57 +228,57 @@
                             </tr>
                         {% endfor %}
             `;
-            } 
-
-            const buttons = document.querySelectorAll('#subjectFilter .btn');
-            buttons.forEach(button => {
-                if (button.getAttribute('value').toLowerCase() === type.toLowerCase()) {
-                    button.classList.add('disabled');
-                } else {
-                    button.classList.remove('disabled');
-                }
-            });
         }
 
-        function filterSubjects() {
-            // Get the search input value
-            const searchValue = document.getElementById('search').value.toLowerCase();
-            
-            // Get all rows in the table
-            const rows = document.querySelectorAll('#nameDetails tr');
-        
-            // Loop through the rows to find matches
-            rows.forEach(row => {
-                const subjectName = row.querySelector('td:nth-child(1)').textContent.toLowerCase().concat(row.querySelector('td:nth-child(2)').textContent.toLowerCase()); // Assuming the 2nd cell contains the subject name
-                
-                // Check if the subject name includes the search value
-                if (subjectName.includes(searchValue)) {
-                    row.classList.remove('d-none'); // Show the row if it matches
-                } else {
-                    row.classList.add('d-none'); // Hide the row if it doesn't match
-                }
-            });
-        }
-
-
-        function cancelQuotaRequest(subjectId) {
-            studentId = 12;
-
-            const csrfTokenElement = document.querySelector('[name=csrfmiddlewaretoken]');
-            if (!csrfTokenElement) {
-                console.error("CSRF token element not found.");
-                return; // ออกจากฟังก์ชันถ้าไม่พบ CSRF token
+        const buttons = document.querySelectorAll('#subjectFilter .btn');
+        buttons.forEach(button => {
+            if (button.getAttribute('value').toLowerCase() === type.toLowerCase()) {
+                button.classList.add('disabled');
+            } else {
+                button.classList.remove('disabled');
             }
-            
-            const csrfToken = csrfTokenElement.value;
-        
-            fetch(`/cancel-quota-request/${studentId}/${subjectId}/`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': csrfToken, // ใช้ CSRF token ที่ถูกต้อง
-                },
-            })
+        });
+    }
+
+    function filterSubjects() {
+        // Get the search input value
+        const searchValue = document.getElementById('search').value.toLowerCase();
+
+        // Get all rows in the table
+        const rows = document.querySelectorAll('#nameDetails tr');
+
+        // Loop through the rows to find matches
+        rows.forEach(row => {
+            const subjectName = row.querySelector('td:nth-child(1)').textContent.toLowerCase().concat(row.querySelector('td:nth-child(2)').textContent.toLowerCase()); // Assuming the 2nd cell contains the subject name
+
+            // Check if the subject name includes the search value
+            if (subjectName.includes(searchValue)) {
+                row.classList.remove('d-none'); // Show the row if it matches
+            } else {
+                row.classList.add('d-none'); // Hide the row if it doesn't match
+            }
+        });
+    }
+
+
+    function cancelQuotaRequest(subjectId) {
+        studentId = 12;
+
+        const csrfTokenElement = document.querySelector('[name=csrfmiddlewaretoken]');
+        if (!csrfTokenElement) {
+            console.error("CSRF token element not found.");
+            return; // ออกจากฟังก์ชันถ้าไม่พบ CSRF token
+        }
+
+        const csrfToken = csrfTokenElement.value;
+
+        fetch(`/cancel-quota-request/${studentId}/${subjectId}/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrfToken, // ใช้ CSRF token ที่ถูกต้อง
+            },
+        })
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
@@ -339,6 +338,6 @@
             .catch(error => {
                 console.error('There was a problem with your fetch operation:', error);
             });
-        }
-    </script>
+    }
+</script>
 {% endblock %}
