@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from .models import Subject ,Student, QuotaRequest, Approval
+from django.contrib.auth.models import User
 # Create your views here.
 
 
@@ -7,7 +8,9 @@ def greeting(request):
     return render(request, 'greeting.html')
 
 def home(request):
-        return render(request, "home.html")
+    current_user = request.user
+    student = Student.objects.filter(stu_id=current_user.username).first()
+    return render(request, "home.html", {'student': student})
 
 def myQuota(request):
     subjects = Subject.objects.all().values("sub_id",
