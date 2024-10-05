@@ -7,14 +7,14 @@
 {% block content %}
 <div class="container-fluid row justify-content-center align-items-center mb-2">
     <div class="custom-box glass rounded text-light">
-        <form method="post" action="{% url 'register' %}">
+        <form method="post" action="{% url 'register' %}" enctype="multipart/form-data">
             {%csrf_token%}
             {{form.non_field_errors}}
             <h3>User Registration</h3>
-            {{ user_form.as_p }} 
+            {{ user_form.as_p }}
 
             <h3>Student Information</h3>
-            {{ student_form.as_p }} 
+            {{ student_form.as_p }}
             <div class="d-grid p-5">
                 <button type="submit" class="btn btn-dark pl-5 pr-5">Submit</button>
             </div>
