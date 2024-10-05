@@ -33,6 +33,7 @@ ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
     'myQuataWeb',
+    'app_user',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -126,3 +127,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MEDIA_URL="media/"
 MEDIA_ROOT=os.path.join(BASE_DIR,"media/")
+
+
+#Auth
+LOGIN_REDIRECT_URL = 'home'
+LOGOUT_REDIRECT_URL = 'greeting'
