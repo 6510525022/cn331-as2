@@ -158,6 +158,7 @@
                         </tr>
                         {% endfor %}
                     </tbody>
+
                 </table>
 
             </div>
@@ -230,12 +231,34 @@
             `;
         }
 
-        const buttons = document.querySelectorAll('#subjectFilter .btn');
-        buttons.forEach(button => {
-            if (button.getAttribute('value').toLowerCase() === type.toLowerCase()) {
-                button.classList.add('disabled');
-            } else {
-                button.classList.remove('disabled');
+        function filterSubjects() {
+            // Get the search input value
+            const searchValue = document.getElementById('search').value.toLowerCase();
+
+            // Get all rows in the table
+            const rows = document.querySelectorAll('#nameDetails tr');
+
+            // Loop through the rows to find matches
+            rows.forEach(row => {
+                const subjectName = row.querySelector('td:nth-child(1)').textContent.toLowerCase().concat(row.querySelector('td:nth-child(2)').textContent.toLowerCase()); // Assuming the 2nd cell contains the subject name
+
+                // Check if the subject name includes the search value
+                if (subjectName.includes(searchValue)) {
+                    row.classList.remove('d-none'); // Show the row if it matches
+                } else {
+                    row.classList.add('d-none'); // Hide the row if it doesn't match
+                }
+            });
+        }
+
+
+        function cancelQuotaRequest(subjectId) {
+            studentId = 12;
+
+            const csrfTokenElement = document.querySelector('[name=csrfmiddlewaretoken]');
+            if (!csrfTokenElement) {
+                console.error("CSRF token element not found.");
+                return; // ออกจากฟังก์ชันถ้าไม่พบ CSRF token
             }
         });
     }
@@ -288,52 +311,12 @@
             .then(data => {
                 // แสดงข้อความแจ้งเตือน
                 alert(data.message); // ข้อความที่ได้จาก server
-                // reset ตาราง
-                document.getElementById("nameDetails").innerHTML = `
-                    {% for subject in myQuota %}
-                            <tr data-status="{{ subject.status }}" id="list-group-item">
-                                <td class="text-uppercase">{{ subject.code }}</td>
-                                <td class="text-capitalize">{{ subject.sub_name }}</td>
-                                <td>Approval</td>
-                                <td class="text-capitalize">{{ subject.faculty }}</td>
-                                <td>{{ subject.quota_limit }}</td>
-                                <td>{{ subject.semester }}</td>
-                                <td>
-                                </td>
-                            </tr>
-                        {% endfor %}
-                
-                        {% for subject in waitList %}
-                            <tr data-status="{{ subject.status }}" id="list-group-item">
-                                <td class="text-uppercase">{{ subject.code }}</td>
-                                <td class="text-capitalize">{{ subject.sub_name }}</td>
-                                <td>Waiting</td>
-                                <td class="text-capitalize">{{ subject.faculty }}</td>
-                                <td>{{ subject.quota_limit }}</td>
-                                <td>{{ subject.semester }}</td>
-                                <td>
-                                    {% csrf_token %}
-                                    <button class="btn btn-outline-warning fs-0 p-1" onclick="cancelQuotaRequest({{ subject.sub_id }})">
-                                        ยกเลิก
-                                    </button>
-                                </td>
-                            </tr>
-                        {% endfor %}
-                
-                        {% for subject in result %}
-                            <tr data-status="{{ subject.status }}" id="list-group-item">
-                                <td class="text-uppercase">{{ subject.code }}</td>
-                                <td class="text-capitalize">{{ subject.sub_name }}</td>
-                                <td>Denied</td>
-                                <td class="text-capitalize">{{ subject.faculty }}</td>
-                                <td>{{ subject.quota_limit }}</td>
-                                <td>{{ subject.semester }}</td>
-                                <td>
-                                </td>
-                            </tr>
-                        {% endfor %}
-                `;
 
+                // ลบแถวที่ถูกยกเลิก
+                const row = document.getElementById(`subject-${subjectId}`);
+                if (row) {
+                    row.remove();
+                }
             })
             .catch(error => {
                 console.error('There was a problem with your fetch operation:', error);

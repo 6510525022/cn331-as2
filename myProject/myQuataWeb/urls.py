@@ -8,6 +8,6 @@ urlpatterns = [
     path('home', views.home, name='home'),
     path('myQuota', views.myQuota, name='myQuota'),
     path('findSub', views.findSub, name='findSub'),
-
+    
 ]
 
