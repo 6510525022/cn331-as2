@@ -36,9 +36,16 @@ def myQuota(request):
                   {'subjects': list(subjects),
                    'myQuota': MyQuota,
                    'waitList': waitList,
-                   'result': result})
+                   'result': result,
+                   'student_id': student_id})
 
 def findSub(request):
+    current_user = request.user.username
+    student = Student.objects.filter(stu_id=current_user).first()
+    student_id = student.user_id
+    
+    print(student_id)
+        
     subjects = Subject.objects.all().values("sub_id",
     "code",
     "sub_name",
@@ -46,7 +53,9 @@ def findSub(request):
     "quota_limit",
     "semester",
     "status")
-    return render(request, "findSub.html" , {'subjects': list(subjects)})
+    return render(request, "findSub.html" , 
+                  {'subjects': list(subjects),
+                   'student_id': student_id})
 
 def register(request):
     if request.method == "POST":

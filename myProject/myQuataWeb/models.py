@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.exceptions import ValidationError
 import os
 
 # Create your models here.
@@ -46,14 +47,27 @@ class QuotaRequest(models.Model):
     WAIT = "W"
     STATUS_DICT = {
         YES: 'Approved',
-        NO: 'Denined',
-        WAIT : "Wait"
-    } 
-    request_id = models.AutoField(primary_key=True) 
-    user_id = models.ForeignKey(Student, on_delete=models.CASCADE, related_name="quota_requests")  
-    status = models.CharField(choices=STATUS_DICT, 
-        default=WAIT,max_length=30,)
+        NO: 'Denied',
+        WAIT: 'Wait'
+    }
+    request_id = models.AutoField(primary_key=True)
+    user_id = models.ForeignKey(Student, on_delete=models.CASCADE, related_name="quota_requests")
+    status = models.CharField(choices=STATUS_DICT, default=WAIT, max_length=30)
     sub_id = models.ForeignKey(Subject, on_delete=models.CASCADE, related_name="quota_requests")
+
+    def clean(self):
+        # ตรวจสอบว่า quota_limit เกินแล้วหรือยัง
+        if self.sub_id.quota_requests.count() >= self.sub_id.quota_limit:
+            raise ValidationError(f"The quota limit for {self.sub_id.sub_name} has been reached.")
+
+        # ตรวจสอบว่าวิชานั้นถูกปิดหรือไม่
+        if self.sub_id.status == 'Close':
+            raise ValidationError(f"Subject {self.sub_id.sub_name} is closed and not accepting quota requests.")
+
+    def save(self, *args, **kwargs):
+        # เรียก clean() ก่อนทำการบันทึกเพื่อการตรวจสอบ
+        self.clean()
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return f"Request {self.request_id} by {self.user_id.stu_id} {self.user_id.first_name} {self.user_id.last_name}"

@@ -138,7 +138,7 @@
                             <td>
                                 {% csrf_token %}
                                 <button class="btn btn-outline-warning fs-0 p-1"
-                                    onclick="cancelQuotaRequest({{ subject.sub_id }})">
+                                    onclick="cancelQuotaRequest({{ student_id|safe }}, {{ subject.sub_id }})">
                                     ยกเลิก
                                 </button>
                             </td>
@@ -197,20 +197,21 @@
         if (type == "waitList" | type == "all") {
             list.innerHTML += `
                     {% for subject in waitList %}
-                            <tr data-status="{{ subject.status }}" id="list-group-item">
-                                <td class="text-uppercase">{{ subject.code }}</td>
-                                <td class="text-capitalize">{{ subject.sub_name }}</td>
-                                <td>Waiting</td>
-                                <td class="text-capitalize">{{ subject.faculty }}</td>
-                                <td>{{ subject.quota_limit }}</td>
-                                <td>{{ subject.semester }}</td>
-                                <td>
-                                    {% csrf_token %}
-                                    <button class="btn btn-outline-warning fs-0 p-1" onclick="cancelQuotaRequest({{ subject.sub_id }})">
-                                        ยกเลิก
-                                    </button>
-                                </td>
-                            </tr>
+                        <tr data-status="{{ subject.status }}" id="subject-{{ subject.sub_id }}">
+                            <td class="text-uppercase">{{ subject.code }}</td>
+                            <td class="text-capitalize">{{ subject.sub_name }}</td>
+                            <td>Waiting</td>
+                            <td class="text-capitalize">{{ subject.faculty }}</td>
+                            <td>{{ subject.quota_limit }}</td>
+                            <td>{{ subject.semester }}</td>
+                            <td>
+                                {% csrf_token %}
+                                <button class="btn btn-outline-warning fs-0 p-1"
+                                    onclick="cancelQuotaRequest({{ student_id|safe }}, {{ subject.sub_id }})">
+                                    ยกเลิก
+                                </button>
+                            </td>
+                        </tr>
                         {% endfor %}
             `;
         }
@@ -262,8 +263,8 @@
     }
 
 
-    function cancelQuotaRequest(subjectId) {
-        studentId = 12;
+    function cancelQuotaRequest(student_id, subjectId) {
+        
 
         const csrfTokenElement = document.querySelector('[name=csrfmiddlewaretoken]');
         if (!csrfTokenElement) {
@@ -273,7 +274,7 @@
 
         const csrfToken = csrfTokenElement.value;
 
-        fetch(`/cancel-quota-request/${studentId}/${subjectId}/`, {
+        fetch(`/cancel-quota-request/${student_id}/${subjectId}/`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -289,12 +290,7 @@
             .then(data => {
                 // แสดงข้อความแจ้งเตือน
                 alert(data.message); // ข้อความที่ได้จาก server
-
-                // ลบแถวที่ถูกยกเลิก
-                const row = document.getElementById(`subject-${subjectId}`);
-                if (row) {
-                    row.remove();
-                }
+                location.reload();
             })
             .catch(error => {
                 console.error('There was a problem with your fetch operation:', error);
