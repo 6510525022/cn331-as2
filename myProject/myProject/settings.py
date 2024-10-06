@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -32,6 +33,7 @@ ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
     'myQuataWeb',
+    'app_user',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -63,6 +65,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'myQuataWeb.context_processors.student_processor',
             ],
         },
     },
@@ -122,3 +125,11 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+MEDIA_URL="media/"
+MEDIA_ROOT=os.path.join(BASE_DIR,"media/")
+
+
+#Auth
+LOGIN_REDIRECT_URL = 'home'
+LOGOUT_REDIRECT_URL = 'greeting'

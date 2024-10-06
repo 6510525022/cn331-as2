@@ -1,145 +1,226 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
+
+{% block navBar %}
+{% include "NavBar.html" %}
+{% endblock %}
 
 {% block content %}
 
-<h1>Find Subjects</h1>
 
-<style>
-    .container {
-      max-width: 1140px;
-      margin-left: auto;
-      margin-right: auto;
-      padding-left: 15px;
-      padding-right: 15px;
-    }
+<!doctype html>
+<html lang="en">
 
-    .mt-5 {
-      margin-top: 80px;
-    }
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap demo</title>
 
-    .custom-box {
-      border-radius: 5px;
-      background-color: white;
-      border: 1px solid #ccc;
-      padding: 20px;
-      width: 900px;
-      height: 500px;
-    }
+    <style>
+        body {
+            background-color: #1c1c1c;
+        }
 
-    .row {
-      display: flex;
-    }
+        .custom-box {
+            padding: 20px;
+            height: 85vh;
+            width: 160vh;
+        }
 
-    .col-left {
-      width: 33.33%;
-      border-right: 1px solid #ddd;
-      padding-right: 15px;
-    }
+        .glass {
+            border: 1px solid transparent;
+            box-shadow: 1.3rem 1.3rem 1.3rem rgba(254, 223, 223, 0.05);
+            border-top-color: rgba(255, 255, 255, 0.5);
+            border-left-color: rgba(255, 255, 255, 0.5);
+            border-right-color: rgba(255, 255, 255, 0.1);
+            border-bottom-color: rgba(255, 255, 255, 0.1);
 
-    .col-right {
-      width: 66.66%;
-      padding-left: 15px;
-    }
+            background-color: rgba(0, 0, 0, 0.05);
+        }
 
-    .scrollable-list {
-      width: 30%;
-      max-height: 450px;
-      overflow-y: auto;
-    }
+        .scrollable-list {
+            min-height: 9vh;
+            max-height: 70vh;
+            overflow-y: auto;
+        }
 
-    .list-group-item {
-      padding: 10px;
-      cursor: pointer;
-      list-style-type: none;
-      border-bottom: 1px solid #ddd;
-    }
+        .list-group-item {
+            background-color: #111;
+            color: #aaa;
+            border: none;
+            transition: background-color 0.12s ease;
+        }
 
-    .list-group-item.active {
-      background-color: gray;
-      color: white;
-    }
+        .list-group-item:hover {
+            background-color: #231120;
+            /*color: #fe8298;*/
+        }
+
+        .list-group-item.active {
+            background-color: #231120;
+            /*color: #fe8298;*/
+            color: #fedfc1;
+        }
+
+        .form-control,
+        .form-select {
+            background-color: #111;
+            color: #ccc;
+            border: 1px solid #333;
+        }
+
+        .form-control::placeholder {
+            color: #ccc;
+        }
+
+        .form-control:focus {
+            background-color: #111;
+            color: #bbcccb;
+        }
+
+        .form-select option {
+            background-color: #111;
+            color: #ccc;
+        }
+
+        .custom-box h5,
+        .custom-box p {
+            color: #ccc;
+        }
+
+        .pointer {
+            cursor: pointer;
+        }
+    </style>
+</head>
 
 
-    ::-webkit-scrollbar {
-        width: 6px; /* width of the entire scrollbar */
-    }
-        
-    ::-webkit-scrollbar-track {
-        background: #f1f1f1; /* color of the tracking area */
-    }
-        
-    ::-webkit-scrollbar-thumb {
-        background: #888; /* color of the scroll thumb */
-    }
-        
-    ::-webkit-scrollbar-thumb:hover {
-        background: #555; /* color of the scroll thumb on hover */
-    }
+<div class="container-fluid row justify-content-center align-items-center m-1">
 
-  </style>
-
-<div class="container mt-5">
-    <div class="row justify-content-center">
-      <div class="col-md-8">
-        <div class="custom-box"> 
-            
-            <!-- กรอบสี่เหลี่ยม -->
-            <header>
-                <input type="text" id="search" placeholder="ค้นหารายวิชา...">
-                <select id="Quata-filter">
-                    <option value="">แสดงเฉพาะวิชาที่สามารถขอ Quata</option>
+    <div class="custom-box glass rounded">
+        <header class="row">
+            <div class="col-md-8">
+                <input type="text" id="search" class="form-control" placeholder="ค้นหารายวิชา..."
+                    onkeyup="filterSubjects()">
+            </div>
+            <div class="col-md-4">
+                <select id="Quata-filter" class="form-select mb-3" onchange="filterSubjects()">
+                    <option value="">แสดงทุกรายวิชา</option>
+                    <option value="Open">รายวิชาที่เปิดรับ Quata</option>
+                    <option value="Close">รายวิชาที่ไม่เปิดรับ Quata</option>
                 </select>
-                <!-- <button id="add-subject-btn">เพิ่มวิชา</button> -->
-            </header>
+            </div>
+        </header>
 
-            
-            <div class="row">
+        <div class="row">
             <!-- รายชื่อทางด้านซ้าย -->
+            <div class="col-md-4">
                 <div class="scrollable-list">
-                  <ul class="list-group" id="nameList">
-                    <li class="list-group-item" onclick="showDetails('CN301')">CN301ssssssssss</li>
-                    <li class="list-group-item" onclick="showDetails('CN302')">CN302</li>
-                    <li class="list-group-item" onclick="showDetails('CN303')">CN303</li>
-                    <li class="list-group-item" onclick="showDetails('CN304')">CN304</li>
-                    <li class="list-group-item" onclick="showDetails('CN305')">CN305</li>
-                    <li class="list-group-item" onclick="showDetails('CN301')">CN301</li>
-                    <li class="list-group-item" onclick="showDetails('CN302')">CN302</li>
-                    <li class="list-group-item" onclick="showDetails('CN303')">CN303</li>
-                    <li class="list-group-item" onclick="showDetails('CN304')">CN304</li>
-                    <li class="list-group-item" onclick="showDetails('CN305')">CN305</li>
-                    <li class="list-group-item" onclick="showDetails('CN301')">CN301</li>
-                    <li class="list-group-item" onclick="showDetails('CN302')">CN302</li>
-                    <li class="list-group-item" onclick="showDetails('CN303')">CN303</li>
-                    <li class="list-group-item" onclick="showDetails('CN304')">CN304</li>
-                    <li class="list-group-item" onclick="showDetails('CN305')">CN305</li>
-                  </ul>
+                    <ul class="list-group" id="nameList">
+                        {% for subject in subjects %}
+                        <li class="list-group-item text-uppercase mb-1 pointer" data-status="{{ subject.status }}"
+                            onclick="showDetails({{ subject|safe }})">
+                            {{ subject.code }} | {{ subject.sub_name }}
+                        </li>
+                        {% empty %}
+                        <li class="list-group-item mb-1">"No subjects found</li>
+                        {% endfor %}
+                    </ul>
                 </div>
+            </div>
 
-
-                <!-- รายละเอียดของชื่อที่เลือกทางด้านขวา -->=
-                <div id="SubjectDetails" style="padding: 20px;">
-                    <h5> เลือกรายวิชาที่ต้องการขอ Quata หรือดูรายละเอียด </h5>
+            <!-- รายละเอียดของชื่อที่เลือกทางด้านขวา -->
+            <div class="col-md-8 ">
+                <div id="nameDetails" class="border p-3" style="height : 53vh">
+                    <h5>เลือกรายวิชาที่ต้องการขอ Quata หรือดูรายละเอียด</h5>
                 </div>
-
             </div>
         </div>
+
     </div>
+
+
+    <script>
+
+        function addQuotaRequest(student_id, sub_id) {
+            const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+            fetch('/add-quota-request/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken
+                },
+                body: JSON.stringify({
+                    student_id: student_id,
+                    sub_id: sub_id
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert("Quota request added successfully!");
+                    } else {
+                        alert("Error: " + data.error);
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+
+        function showDetails(subject) {
+            student_id = 12;
+
+            document.getElementById("nameDetails").innerHTML = `
+                <h5>code: ${subject.code}</h5>
+                <p>sub_name: ${subject.sub_name}</p>
+                <p>faculty: ${subject.faculty}</p>
+                <p>quota_limit: ${subject.quota_limit}</p>
+                <p>semester: ${subject.semester}</p>
+                <p>status: ${subject.status}</p>
+
+                <div class="col text-center" style="margin-top: 8vh;">
+                    {% csrf_token %}
+                    <button type="button" class="btn btn-dark" id="add-my-Quata"     
+                        onclick="addQuotaRequest(${student_id}, ${subject.sub_id})">
+                        ขอ Quata
+                    </button>
+                </div>
+            `;
+
+            // Highlight the selected item
+            let listItems = document.querySelectorAll('.list-group-item');
+            listItems.forEach(item => {
+                item.classList.remove('active');
+            });
+            event.target.classList.add('active');
+        }
+
+        function filterSubjects() {
+            const filterValue = document.getElementById("Quata-filter").value.toLowerCase();
+            const searchValue = document.getElementById("search").value.toLowerCase();
+            const listItems = document.querySelectorAll('.list-group-item');
+
+            listItems.forEach(item => {
+
+                const subjectName = item.textContent.toLowerCase();
+                const status = item.getAttribute('data-status').toLowerCase();
+
+                const matchesFilter = (filterValue === "" || status === filterValue);
+                const matchesSearch = (subjectName.includes(searchValue));
+
+                if (matchesFilter && matchesSearch) {
+                    item.style.display = ""; // แสดงรายการ
+                } else {
+                    item.classList.remove('active');
+                    document.getElementById("nameDetails").innerHTML = `
+                    <h5>เลือกรายวิชาที่ต้องการขอ Quata หรือดูรายละเอียด</h5>
+                    `
+                    item.style.display = "none"; // ซ่อนรายการ
+                }
+            });
+        }
+    </script>
 </div>
 
 
-    
-<script>
-    function showDetails(name) {
-        document.getElementById("SubjectDetails").innerHTML = `<h4>วิชา ${name}</h4> <p> รายละเอียดของวิชา ${name}</p>`;
-    
-        // Highlight the selected item
-        let listItems = document.querySelectorAll('.list-group-item');
-        listItems.forEach(item => {
-            item.classList.remove('active');
-        });
-            event.target.classList.add('active');
-        }
-</script>
-
-    
 {% endblock %}
