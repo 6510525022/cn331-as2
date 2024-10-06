@@ -24,7 +24,7 @@ To get the Quata app running locally, follow these steps:
 
 1. **Clone the Repository**:
      ```bash
-     git clone <repository-url>
+     git clone https://github.com/6510525022/cn331-as2.git
      ```
 
 2. **Set Up the Virtual Environment**:
