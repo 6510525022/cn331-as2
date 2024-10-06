@@ -84,7 +84,7 @@
     <div class="custom-box1 glass rounded">
 
         <header class="row p-3">
-            <h3 class="col-md-3 text-center text-white">MyQuota</h3>
+            <h3 class="col-md-3 text-center yellowText">myQuota</h3>
             <div class="col-md-5 btn-group mb-2" id="subjectFilter">
                 <a value="all" class="btn btn-dark disabled p-1 fs-0" onclick="show('all')">All</a>
                 <a value="myQuota" class="btn btn-dark p-1 fs-0" onclick="show('myQuota')">Approval</a>
@@ -115,7 +115,7 @@
                     </thead>
                     <tbody id="nameDetails">
                         {% for subject in myQuota %}
-                        <tr data-status="{{ subject.status }}" id="list-group-item">
+                        <tr data-status="{{ subject.status }}" id="subject-{{ subject.sub_id }}">
                             <td class="text-uppercase">{{ subject.code }}</td>
                             <td class="text-capitalize">{{ subject.sub_name }}</td>
                             <td>Approval</td>
@@ -128,7 +128,7 @@
                         {% endfor %}
 
                         {% for subject in waitList %}
-                        <tr data-status="{{ subject.status }}" id="list-group-item">
+                        <tr data-status="{{ subject.status }}" id="subject-{{ subject.sub_id }}">
                             <td class="text-uppercase">{{ subject.code }}</td>
                             <td class="text-capitalize">{{ subject.sub_name }}</td>
                             <td>Waiting</td>
@@ -146,7 +146,7 @@
                         {% endfor %}
 
                         {% for subject in result %}
-                        <tr data-status="{{ subject.status }}" id="list-group-item">
+                        <tr data-status="{{ subject.status }}" id="subject-{{ subject.sub_id }}">
                             <td class="text-uppercase">{{ subject.code }}</td>
                             <td class="text-capitalize">{{ subject.sub_name }}</td>
                             <td>Denied</td>
@@ -231,34 +231,12 @@
             `;
         }
 
-        function filterSubjects() {
-            // Get the search input value
-            const searchValue = document.getElementById('search').value.toLowerCase();
-
-            // Get all rows in the table
-            const rows = document.querySelectorAll('#nameDetails tr');
-
-            // Loop through the rows to find matches
-            rows.forEach(row => {
-                const subjectName = row.querySelector('td:nth-child(1)').textContent.toLowerCase().concat(row.querySelector('td:nth-child(2)').textContent.toLowerCase()); // Assuming the 2nd cell contains the subject name
-
-                // Check if the subject name includes the search value
-                if (subjectName.includes(searchValue)) {
-                    row.classList.remove('d-none'); // Show the row if it matches
-                } else {
-                    row.classList.add('d-none'); // Hide the row if it doesn't match
-                }
-            });
-        }
-
-
-        function cancelQuotaRequest(subjectId) {
-            studentId = 12;
-
-            const csrfTokenElement = document.querySelector('[name=csrfmiddlewaretoken]');
-            if (!csrfTokenElement) {
-                console.error("CSRF token element not found.");
-                return; // ออกจากฟังก์ชันถ้าไม่พบ CSRF token
+        const buttons = document.querySelectorAll('#subjectFilter .btn');
+        buttons.forEach(button => {
+            if (button.getAttribute('value').toLowerCase() === type.toLowerCase()) {
+                button.classList.add('disabled');
+            } else {
+                button.classList.remove('disabled');
             }
         });
     }
@@ -322,5 +300,6 @@
                 console.error('There was a problem with your fetch operation:', error);
             });
     }
+
 </script>
 {% endblock %}
