@@ -6,7 +6,6 @@ from django.shortcuts import get_object_or_404
 from django.contrib.auth.models import User
 # Create your views here.
 
-student_id = 12
 
 def greeting(request):
     return render(request, 'greeting.html')
@@ -15,22 +14,29 @@ def home(request):
     return render(request, "home.html")
 
 def myQuota(request):
+    current_user = request.user.username
+    student = Student.objects.filter(stu_id=current_user).first()
+    student_id = student.user_id
+
+    print(student_id)
+
     subjects = Subject.objects.all().values("sub_id",
-    "code",
-    "sub_name",
-    "faculty",
-    "quota_limit",
-    "semester",
-    "status")
+                                            "code",
+                                            "sub_name",
+                                            "faculty",
+                                            "quota_limit",
+                                            "semester",
+                                            "status")
+
     MyQuota = get_subjects_with_Approval_Approval(student_id)
     waitList = get_subjects_without_Approval(student_id)
-    Result = get_subjects_with_Approval_Denied(student_id)
+    result = get_subjects_with_Approval_Denied(student_id)
+
     return render(request, "myQuota.html", 
                   {'subjects': list(subjects),
                    'myQuota': MyQuota,
                    'waitList': waitList,
-                   'result': Result}
-                  )
+                   'result': result})
 
 def findSub(request):
     subjects = Subject.objects.all().values("sub_id",
@@ -154,14 +160,13 @@ def get_subjects_without_Approval(student_id):
     return subjects_without_approval
 
 
-
-
-    
 #findSub Request
 def add_quota_request(request):
     if request.method == "POST":
+        current_user = request.user.username
+        student = Student.objects.filter(stu_id=current_user).first()
+        student_id = student.user_id
         data = json.loads(request.body)
-        student_id = data.get("student_id")
         sub_id = data.get("sub_id")
 
         try:
