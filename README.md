@@ -1,4 +1,6 @@
-# CN331-AS2 (Quata App)
+# CN331-AS2 (Quota App)
+
+This repository contains the Quota app, which has two use cases, one for admins and one for students.
 
 ## Member
 1. กษิดิศ กรสังข์ 6510685016
@@ -7,14 +9,12 @@
 ## Link คลิปตัวอย่างการใช้งาน
 [คลิปตัวอย่างการใช้งาน คลิก]( https://tuipied-my.sharepoint.com/:v:/g/personal/chayutpong_pon_dome_tu_ac_th/EUT9HUn32FxEplT4fA4bGZABiuhWJ9g0o4lB6eisXpkV4Q?e=XguzEE )
 
-This repository contains the Quata app, which has two use cases, one for admins and one for students.
-
 ## Features
 
 ### Admin Side
 Admins have the ability to manage subjects and handle quota requests submitted by students. Specifically, admins can:
 - **Add Subject and Subject Details**:
-  - This includes adding the subject code, subject name, academic year, semester, capacity, quata request's status (open or closed).
+  - This includes adding the subject code, subject name, academic year, semester, capacity, Quota request's status (open or closed).
 - **Manage Student Quota Requests**:
   - Approve or deny quota requests submitted by students.
 
@@ -25,9 +25,9 @@ Students can submit and manage their quota requests, as well as view the status 
   - See the status of their request (waiting, approved, denied).
 - **Cancel a Quota Request**: Withdraw a request.
 
-## How to Start the Quata App
+## How to Start the Quota App
 
-To get the Quata app running locally, follow these steps:
+To get the Quota app running locally, follow these steps:
 
 1. **Clone the Repository**:
      ```bash
