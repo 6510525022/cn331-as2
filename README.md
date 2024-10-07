@@ -40,7 +40,7 @@ To get the Quata app running locally, follow these steps:
 
 4. **Install the requirements packages**:
      ```bash
-     pip install -r requirements.txt
+     pip install -r requiments.txt
      ```
 
 5. **Run Server**:
