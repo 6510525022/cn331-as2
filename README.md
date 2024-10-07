@@ -5,7 +5,7 @@
 2. ชยุตม์พงศ์ พลเยี่ยม 6510525022
 
 ## Link คลิปตัวอย่างการใช้งาน
-[คลิปตัวอย่างการใช้งาน คลิก]( https://teams.microsoft.com/l/message/19:68602fde-6b0d-4f3d-a8e0-a78971e744c7_74dd5706-ca92-46e2-a43d-53a021ee5b5f@unq.gbl.spaces/1728272132094?context=%7B%22contextType%22%3A%22chat%22%7D)
+[คลิปตัวอย่างการใช้งาน คลิก]( https://tuipied-my.sharepoint.com/:v:/g/personal/chayutpong_pon_dome_tu_ac_th/EUT9HUn32FxEplT4fA4bGZABiuhWJ9g0o4lB6eisXpkV4Q?e=XguzEE )
 
 This repository contains the Quata app, which has two use cases, one for admins and one for students.
 
