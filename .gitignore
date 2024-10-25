@@ -1,1 +1,4 @@
 /venv
+myProject/htmlcov
+myProject/.coverage
+myProject/manage.py
