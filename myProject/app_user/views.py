@@ -1,4 +1,3 @@
-import json
 from django.shortcuts import render, redirect
 from django.contrib.auth import login
 from .forms import UserRegisterForm, StudentForm
@@ -29,11 +28,8 @@ def register(request):
 
             print(profile_pic)
 
-            try:
-                student.save() 
-            except Exception as e:
-                print(f"Error saving student: {e}")  
-
+            student.save() 
+               
             return redirect('home')
     else:
         user_form = UserRegisterForm()
@@ -43,4 +39,5 @@ def register(request):
         "user_form": user_form,
         "student_form": student_form,
     }
+
     return render(request, 'registration/register.html', context)
