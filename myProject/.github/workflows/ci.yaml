@@ -1,0 +1,15 @@
+name: Testing
+on: push
+
+jobs:
+  test_project:
+  runs-on: ubuntu-latest
+  steps:
+  - users: actions/checkout@v2
+  - name: Run Django unit tests
+    run: |
+      pip3 install --user -r requiments.txt
+      python3 manage.py makemigrations
+      python3 manage.py migrate
+      coverage run --source='.' manage.py test
+      coverage report

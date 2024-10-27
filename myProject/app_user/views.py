@@ -10,7 +10,7 @@ def register(request):
         student_form = StudentForm(request.POST, request.FILES)  
 
         if user_form.is_valid() and student_form.is_valid():
-            user = user_form.save()  
+            user = user_form.save() 
             login(request, user)  
 
             profile_pic = student_form.cleaned_data.get('profile_pic') 
