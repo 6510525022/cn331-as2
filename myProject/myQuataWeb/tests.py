@@ -196,4 +196,5 @@ class QuotaAppTests(TestCase):
         response = self.client.get(reverse('findSub'))
         
         self.assertEqual(response.status_code, 200)
+        
         self.assertTemplateUsed(response, "findSub.html")
