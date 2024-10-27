@@ -9,6 +9,7 @@ jobs:
     - name: Run Django unit tests
       run: |
         pip3 install --user -r requirements.txt
+        cd myProject
         python3 manage.py makemigrations
         python3 manage.py migrate
         coverage run --source='.' manage.py test
