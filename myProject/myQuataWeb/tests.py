@@ -197,3 +197,12 @@ class QuotaAppTests(TestCase):
         
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "findSub.html")
+
+    #Folk's Edit
+    def test_greeting_view(self):
+        '''ทดสอบว่าสามารถเรียกใช้หน้า greeting ได้'''
+
+        response = self.client.get(reverse('greeting'))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "greeting.html")
