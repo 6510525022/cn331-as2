@@ -26,8 +26,6 @@ def register(request):
                 profile_pic=profile_pic, 
             )
 
-            print(profile_pic)
-
             student.save() 
                
             return redirect('home')

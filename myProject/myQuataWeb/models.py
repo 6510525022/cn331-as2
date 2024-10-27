@@ -36,6 +36,18 @@ class Subject(models.Model):
     quota_limit = models.IntegerField(default=9999)
     semester = models.CharField(choices=SEM_DICT, max_length=20)
     status = models.CharField(choices=STA_DICT, max_length=10)
+    
+    def quota_count(self):
+        quota_count = QuotaRequest.objects.filter(sub_id=self.sub_id).count()
+        return quota_count
+    
+    def is_quota_limit_reached(self):
+        # นับเฉพาะจำนวน approval ที่ decision == 'Approved'
+        approved_count = Approval.objects.filter(request_id__sub_id=self.sub_id, decision='Approved').count()
+        return approved_count >= self.quota_limit
+    
+    def is_close(self):
+        return self.status == "Close"
 
     def __str__(self):
         return f"id: {self.sub_id}, code: {self.code}, limit: {self.quota_limit} semester: {self.semester} status: {self.status}"
@@ -56,14 +68,17 @@ class QuotaRequest(models.Model):
     sub_id = models.ForeignKey(Subject, on_delete=models.CASCADE, related_name="quota_requests")
 
     def clean(self):
+        # นับเฉพาะจำนวน approval ที่ decision == 'Approved'
+        approved_count = Approval.objects.filter(request_id__sub_id=self.sub_id, decision='Approved').count()
+
         # ตรวจสอบว่า quota_limit เกินแล้วหรือยัง
-        if self.sub_id.quota_requests.count() >= self.sub_id.quota_limit:
+        if approved_count >= self.sub_id.quota_limit:
             raise ValidationError(f"The quota limit for {self.sub_id.sub_name} has been reached.")
 
         # ตรวจสอบว่าวิชานั้นถูกปิดหรือไม่
         if self.sub_id.status == 'Close':
             raise ValidationError(f"Subject {self.sub_id.sub_name} is closed and not accepting quota requests.")
-
+    
     def save(self, *args, **kwargs):
         # เรียก clean() ก่อนทำการบันทึกเพื่อการตรวจสอบ
         self.clean()

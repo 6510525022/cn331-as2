@@ -18,8 +18,6 @@ def myQuota(request):
     student = Student.objects.filter(stu_id=current_user).first()
     student_id = student.user_id
 
-    print(student_id)
-
     subjects = Subject.objects.all().values("sub_id",
                                             "code",
                                             "sub_name",
@@ -43,8 +41,6 @@ def findSub(request):
     current_user = request.user.username
     student = Student.objects.filter(stu_id=current_user).first()
     student_id = student.user_id
-    
-    print(student_id)
         
     subjects = Subject.objects.all().values("sub_id",
     "code",
@@ -82,7 +78,7 @@ def register(request):
             first_name=firstname,
             last_name=lastname,
             faculty=faculty,
-             profile_pic=profile_pic if profile_pic else 'media/profile_photos/default.jpg',
+            profile_pic=profile_pic if profile_pic else 'media/profile_photos/default.jpg',
         )
 
         return redirect('/')
