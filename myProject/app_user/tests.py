@@ -5,6 +5,7 @@ from app_user.forms import StudentForm, UserRegisterForm
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.contrib.auth.models import User
 from myQuataWeb.models import Student
+from unittest.mock import patch
 
 # Create your tests here.
 
@@ -90,7 +91,47 @@ class RegisterViewTest(TestCase):
         student = Student.objects.get(stu_id="testuser2")
         self.assertEqual(student.profile_pic.url, '/media/media/profile_photos/default.jpg')
 
+    def test_add_quota_request_subject_does_not_exist(self):
+        '''test เมื่อ add_quota_request แล้วไม่มีวิชานั้น'''
+        data = {
+            'sub_id': "999"  
+        }
 
+       
+        with patch('myQuataWeb.models.Subject.objects.get', side_effect=Subject.DoesNotExist):
+            response = self.client.post(
+                reverse('add_quota_request'),
+                data=json.dumps(data),
+                content_type='application/json'
+            )
+
+        # ตรวจสอบ response status และ error message
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), {"success": False, "error": "Invalid student or subject."})
+
+    def test_add_quota_request_invalid_method(self):
+        '''ทดสอบว่า add_quota_request จะตอบกลับ error กรณีที่ไม่ใช่ POST method ได้หรือไม่'''
+
+        response = self.client.get(reverse('add_quota_request'))
+    
+        # ตรวจสอบว่า status code เป็น 200 เมื่อ method ไม่ใช่ POST
+        self.assertEqual(response.status_code, 200)
+        # ตรวจสอบว่า JSON response มีข้อความ error ที่ถูกต้อง
+        self.assertEqual(response.json(), {"success": False, "error": "Invalid request method."})
+
+    
+    def test_cancel_quota_request_invalid_method(self):
+        '''ทดสอบว่า cancel_quota_request จะตอบกลับ error กรณีที่ไม่ใช่ POST method ได้หรือไม่'''
+
+        response = self.client.get(reverse('cancel_quota_request', kwargs={
+            'student_id': self.student2.user_id,
+            'subject_id': self.subject2.sub_id,
+        }), content_type='application/json')
+
+        # ตรวจสอบว่า status code เป็น 400 เมื่อ method ไม่ใช่ POST
+        self.assertEqual(response.status_code, 400)
+        # ตรวจสอบว่า JSON response มีข้อความ error ที่ถูกต้อง
+        self.assertEqual(response.json(), {'status': 'error', 'message': 'Invalid request method'})
 
         
 
