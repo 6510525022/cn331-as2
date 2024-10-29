@@ -207,3 +207,29 @@ class QuotaAppTests(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "greeting.html")
+        
+        
+    def test_add_quota_request_invalid_method(self):
+        '''ทดสอบว่า add_quota_request จะตอบกลับ error กรณีที่ไม่ใช่ POST method ได้หรือไม่'''
+
+        response = self.client.get(reverse('add_quota_request'))
+    
+        # ตรวจสอบว่า status code เป็น 200 เมื่อ method ไม่ใช่ POST
+        self.assertEqual(response.status_code, 200)
+        # ตรวจสอบว่า JSON response มีข้อความ error ที่ถูกต้อง
+        self.assertEqual(response.json(), {"success": False, "error": "Invalid request method."})
+
+    
+    def test_cancel_quota_request_invalid_method(self):
+        '''ทดสอบว่า cancel_quota_request จะตอบกลับ error กรณีที่ไม่ใช่ POST method ได้หรือไม่'''
+
+        response = self.client.get(reverse('cancel_quota_request', kwargs={
+            'student_id': self.student2.user_id,
+            'subject_id': self.subject2.sub_id,
+        }), content_type='application/json')
+
+        # ตรวจสอบว่า status code เป็น 400 เมื่อ method ไม่ใช่ POST
+        self.assertEqual(response.status_code, 400)
+        # ตรวจสอบว่า JSON response มีข้อความ error ที่ถูกต้อง
+        self.assertEqual(response.json(), {'status': 'error', 'message': 'Invalid request method'})
+
