@@ -5,6 +5,7 @@ from .models import Student, Subject, QuotaRequest, Approval
 from django.contrib.auth.models import User
 from django.http import JsonResponse
 from django.middleware.csrf import get_token
+from django.db.models import Max
 import json
 from myQuataWeb.views import get_subjects_without_quota_request_by_student, get_subjects_with_Approval_Approval, get_subjects_with_Approval_Denied
 
@@ -145,6 +146,7 @@ class QuotaAppTests(TestCase):
         # สร้าง QuotaRequest ใหม่ แต่ยังไม่บันทึกลงฐานข้อมูล
         quota_request = QuotaRequest(user_id=self.student1, sub_id=self.subject3)
 
+        self.assertTrue(self.subject3.is_close())
         # ตรวจสอบว่าเมื่อเรียก full_clean จะเกิด ValidationError ขึ้น
         with self.assertRaises(ValidationError) as cm:
             quota_request.full_clean()  # เรียกใช้ full_clean แทนที่จะเป็น save()
@@ -163,7 +165,7 @@ class QuotaAppTests(TestCase):
         self.subject1.quota_limit = 1
         self.subject1.save()
 
-
+        self.assertTrue(self.subject1.is_quota_limit_reached())
         # สร้าง QuotaRequest ใหม่ แต่ยังไม่บันทึกลงฐานข้อมูล
         quota_request = QuotaRequest(user_id=self.student1, sub_id=self.subject1)
 
@@ -241,13 +243,13 @@ class QuotaAppTests(TestCase):
         self.assertTrue(subjects.count() == 2)
                 
     def test_get_subjects_with_Approval_Approval(self):
-        '''ทดสอบว่า get_subjects_without_quota_request_by_student จะได้รายวิชาที่ยังไม่เคยขอโควตา'''
+        '''ทดสอบว่า get_subjects_without_quota_request_by_student จะได้รายวิชาที่อนุมัติคำขอแล้ว'''
 
         subjects = get_subjects_with_Approval_Approval(self.student2.user_id)
         self.assertTrue(subjects.count() == 1)
             
     def test_get_subjects_with_Approval_Denied(self):
-        '''ทดสอบว่า get_subjects_without_quota_request_by_student จะได้รายวิชาที่ยังไม่เคยขอโควตา'''
+        '''ทดสอบว่า get_subjects_without_quota_request_by_student จะได้รายวิชาที่ถูกปฎิเสธคำขอ'''
 
         subjects = get_subjects_with_Approval_Denied(self.student2.user_id)
         self.assertTrue(subjects.count() == 0)
@@ -258,4 +260,12 @@ class QuotaAppTests(TestCase):
         subjects = get_subjects_with_Approval_Denied(self.student2.user_id)
         self.assertTrue(subjects.count() == 1)
             
-            
+    def test_invalid_add_quota_request(self):
+        '''ส่งคำขอโควตาในรายวิชาที่ไม่มีอยู่'''
+        
+        # ส่งคำขอโควต้า
+        response = self.client.post(reverse('add_quota_request'), json.dumps({
+            "sub_id": Subject.objects.aggregate(Max('sub_id'))['sub_id__max'] + 1
+        }), content_type="application/json")
+        
+        self.assertEqual(json.loads(response.content)["error"], "Invalid student or subject.")
