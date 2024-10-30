@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from django.http import JsonResponse
 from django.middleware.csrf import get_token
 import json
+from myQuataWeb.views import get_subjects_without_quota_request_by_student, get_subjects_with_Approval_Approval, get_subjects_with_Approval_Denied
 
 class QuotaAppTests(TestCase):
 
@@ -233,3 +234,28 @@ class QuotaAppTests(TestCase):
         # ตรวจสอบว่า JSON response มีข้อความ error ที่ถูกต้อง
         self.assertEqual(response.json(), {'status': 'error', 'message': 'Invalid request method'})
 
+    def test_get_subjects_without_quota_request_by_student(self):
+        '''ทดสอบว่า get_subjects_without_quota_request_by_student จะได้รายวิชาที่ยังไม่เคยขอโควตา'''
+
+        subjects = get_subjects_without_quota_request_by_student(self.student2.user_id)
+        self.assertTrue(subjects.count() == 2)
+                
+    def test_get_subjects_with_Approval_Approval(self):
+        '''ทดสอบว่า get_subjects_without_quota_request_by_student จะได้รายวิชาที่ยังไม่เคยขอโควตา'''
+
+        subjects = get_subjects_with_Approval_Approval(self.student2.user_id)
+        self.assertTrue(subjects.count() == 1)
+            
+    def test_get_subjects_with_Approval_Denied(self):
+        '''ทดสอบว่า get_subjects_without_quota_request_by_student จะได้รายวิชาที่ยังไม่เคยขอโควตา'''
+
+        subjects = get_subjects_with_Approval_Denied(self.student2.user_id)
+        self.assertTrue(subjects.count() == 0)
+            
+        quotaRequest2 = QuotaRequest.objects.create(user_id=self.student2, sub_id=self.subject2)
+        approval2 = Approval.objects.create(request_id=quotaRequest2, decision="Denied")
+            
+        subjects = get_subjects_with_Approval_Denied(self.student2.user_id)
+        self.assertTrue(subjects.count() == 1)
+            
+            
